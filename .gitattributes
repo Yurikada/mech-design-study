@@ -4,3 +4,4 @@
 *.toml text eol=lf
 *.yml text eol=lf
 *.cmd text eol=crlf
+docs/learning/assets/lecture-data.js linguist-generated=true

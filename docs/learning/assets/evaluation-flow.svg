@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 510" role="img" aria-labelledby="title desc">
+<title id="title">物理モデルと合否判定を分けた処理</title>
+<desc id="desc">ケース入力をcase.pyで検証し、models.pyで物理量を計算、evaluation.pyで閾値・未評価を扱い、cli.pyで結果を表示する。</desc>
+<rect width="640" height="510" fill="#fff"/>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#1f2937"/></marker></defs>
+<g font-family="Arial, Yu Gothic, sans-serif" font-size="24" fill="#1f2937">
+<text x="30" y="35" font-weight="700">計算する責務と、判断する責務</text>
+<rect x="45" y="56" width="550" height="72" rx="8" fill="#edf2f6"/>
+<text x="65" y="85">case.py</text><text x="65" y="115">入力の型・SI単位・適用範囲を確認</text>
+<path d="M320 130V167" stroke="#1f2937" stroke-width="2" marker-end="url(#a)"/>
+<text x="350" y="156">寸法・物性・条件</text>
+<rect x="45" y="175" width="550" height="72" rx="8" fill="#d7e8f4"/>
+<text x="65" y="204">models.py</text><text x="65" y="234">応力・変位・周波数・温度を計算</text>
+<path d="M320 249V286" stroke="#1f2937" stroke-width="2" marker-end="url(#a)"/>
+<text x="350" y="275">物理量</text>
+<rect x="45" y="294" width="550" height="72" rx="8" fill="#f7ecdc"/>
+<text x="65" y="323">evaluation.py</text><text x="65" y="353">閾値と比較し、未評価も記録</text>
+<path d="M320 368V405" stroke="#1f2937" stroke-width="2" marker-end="url(#a)"/>
+<text x="350" y="394">値・余裕・状態</text>
+<rect x="45" y="413" width="550" height="72" rx="8" fill="#edf2f6"/>
+<text x="65" y="442">cli.py</text><text x="65" y="472">結果を表示：4指標の合格 ≠ 全体合格</text>
+</g></svg>

@@ -1,5 +1,7 @@
 # 第一ケース: 加熱される片持ち支持板
 
+講義から進める場合は [図付き講義](01-lecture.md) または [ブラウザ版](01-lecture.html) を読む。講義は以下の4つの完了条件に対応し、Q1〜Q4で確認する。
+
 目的は、式・前提・数値・合否を追える最小例で、個別物理と統合の両方を学ぶこと。AIが式と初期コードを用意しているため、実行成功だけでは学習完了としない。
 
 ## モデルを図にする
@@ -34,7 +36,7 @@ f_1=\frac{1.875104^2}{2\pi L^2}\sqrt{\frac{EI}{\rho A}}
 T_{tip}=T_{base}+Q\frac{L}{kA}, \qquad m=\rho AL
 ```
 
-モデル実装は `src/mech_design/models.py`。導出の入口は [MIT構造力学](../references.md) と [Oxfordの梁振動資料](https://eng.ox.ac.uk/media/9248/sim.pdf)。梁振動の式はEuler–Bernoulli方程式の固定・自由境界条件から得る。熱の式は定常・一次元・熱伝導率一定のFourier則を積分する。
+モデル実装は `src/mech_design/models.py`。導出の入口は [MIT構造力学](../references.md) と [FunctionBayの片持ち梁解説・式(5.41)](https://help.functionbay.com/2026/RecurDynHelp/Analysis/Analysis_ch04_s05_03.html)。梁振動の式はEuler–Bernoulli方程式の固定・自由境界条件から得る。熱の式は定常・一次元・熱伝導率一定のFourier則を積分する。
 
 ## 実験前の予想
 

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+<title id="title">一次元定常熱伝導の境界条件</title>
+<desc id="desc">右端からQワットを供給し、側面は断熱。熱は低温の左端へ流れる。左端の温度は一定で、温度分布は右上がりの直線になる。</desc>
+<rect width="640" height="400" fill="#fff"/>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#1f2937"/></marker></defs>
+<g font-family="Arial, Yu Gothic, sans-serif" font-size="24" fill="#1f2937">
+<text x="30" y="36" font-weight="700">側面は断熱：熱は根元へ流れる</text>
+<rect x="52" y="77" width="48" height="100" fill="#d7e8f4" stroke="#346c91"/>
+<rect x="100" y="100" width="382" height="52" fill="#f7ecdc" stroke="#1f2937" stroke-width="2"/>
+<path d="M610 126H484" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="499" y="99">Q [W]</text>
+<path d="M405 127H173" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="210" y="190">熱流の向き</text>
+<text x="30" y="220">根元温度一定</text><text x="379" y="220">先端へ入熱</text>
+<path d="M90 355V259M90 355H530" stroke="#1f2937" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M91 329 482 269" stroke="#b05c19" stroke-width="4"/>
+<circle cx="91" cy="329" r="5" fill="#346c91"/><circle cx="482" cy="269" r="5" fill="#b05c19"/>
+<text x="32" y="278">T</text><text x="107" y="315">T_base</text><text x="403" y="257">T_tip</text>
+<text x="72" y="386">0</text><text x="473" y="386">L</text><text x="549" y="363">x</text>
+</g></svg>

@@ -26,4 +26,5 @@ jobs:
       - run: python -m ruff check .
       - run: python -m ruff format --check .
       - run: python -m pytest -q
+      - run: python scripts/build_lecture_data.py --check
       - run: python -m mech_design cases/heated_cantilever.toml --json

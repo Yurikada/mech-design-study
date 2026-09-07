@@ -84,6 +84,8 @@ docs/                     学習課題、拡張計画、設計判断、出典
 
 ## 次に読む
 
+- [図付き講義：式から設計判断へ](docs/learning/01-lecture.md) / [ブラウザ版（clone後に開く）](docs/learning/01-lecture.html)
+- [講義の閲覧・更新・公開準備](docs/learning/MAINTAINING.md)
 - [12分野と統合技術の学習ロードマップ](docs/roadmap.md)
 - [第一ケースの式・前提・課題](docs/learning/01-heated-cantilever.md)
 - [統合アーキテクチャ](docs/architecture.md)

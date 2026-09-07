@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-labelledby="title desc">
+<title id="title">片持ち梁の力学モデルと断面</title>
+<desc id="desc">左端を完全固定し右端へ厚み方向の横荷重Fを加える。長さL、断面幅b、厚みtを定義する。破線は誇張したたわみ。振動式は先端質量を含まない。</desc>
+<!-- Original schematic. Deliberately light technical drawing for GitHub and print. -->
+<rect width="640" height="440" fill="#fff"/>
+<defs><pattern id="hatch" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 12 12 0" stroke="#6b7280"/></pattern><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="M0 0 6 3 0 6" fill="none" stroke="#1f2937"/></marker></defs>
+<g font-family="Arial, Yu Gothic, sans-serif" font-size="24" fill="#1f2937">
+<text x="30" y="38" font-weight="700">側面：力と固定の条件</text>
+<rect x="45" y="68" width="38" height="140" fill="url(#hatch)"/>
+<path d="M83 65V211" stroke="#1f2937" stroke-width="4"/>
+<rect x="84" y="115" width="410" height="24" fill="#d7e8f4" stroke="#1f2937" stroke-width="2"/>
+<path d="M494 65V114" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="516" y="85">F [N]</text>
+<path d="M84 139Q300 139 494 188" fill="none" stroke="#346c91" stroke-width="3" stroke-dasharray="8 5"/>
+<path d="M512 139V187" stroke="#1f2937" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="540" y="171">δ</text>
+<text x="30" y="246">完全固定</text><text x="215" y="246">破線：変形を誇張</text>
+<path d="M85 277H492" stroke="#1f2937" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="265" y="269">L [m]</text>
+<text x="30" y="330" font-weight="700">断面</text>
+<rect x="170" y="333" width="260" height="40" fill="#d7e8f4" stroke="#1f2937" stroke-width="2"/>
+<path d="M170 397H430" stroke="#1f2937" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="275" y="427">b [m]</text>
+<path d="M458 334V372" stroke="#1f2937" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="480" y="363">t [m]</text>
+</g></svg>

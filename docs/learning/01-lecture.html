@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="片持ち梁の応力・たわみ・振動・熱を学び、制約の統合と未評価の扱いを確認する講義。">
+<title>講義1：式から設計判断へ | mech-design-study</title>
+<link rel="stylesheet" href="assets/lecture.css">
+<script defer src="assets/lecture-data.js"></script>
+<script defer src="assets/lecture.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+<header class="masthead">
+  <div class="masthead-inner"><a href="01-lecture.md">mech-design-study / 講義1</a>
+  <label class="theme-control">表示<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></div>
+</header>
+<main id="main">
+  <div class="intro">
+    <p class="eyebrow">MECHANICAL DESIGN STUDY · LESSON 01</p>
+    <h1>式から設計判断へ</h1>
+    <p class="lead">加熱される片持ち支持板で、<strong>前提を置く → 計算する → 条件と比べる</strong>を一周する。</p>
+    <p>倍率を予想する力から、モデルの適用範囲とソフトウェアの仕組みを説明する力へ。図を読み、寸法を変え、最後に自分の説明と実行結果で確認します。</p>
+    <p class="note">学習用の解析解モデルです。実機の妥当性・寿命・EMC適合は未検証。図と資料はAI支援で作成しています。</p>
+  </div>
+  <nav aria-label="講義の目次"><a href="#conditions">1. 前提と単位</a><a href="#equations">2. 四つの式</a><a href="#validity">3. 実機との違い</a><a href="#experiment">4. 寸法を変える</a><a href="#integration">5. 評価をつなぐ</a><a href="#questions">6. 理解を確認</a></nav>
+
+  <section id="conditions">
+    <p class="chapter">01 / 境界条件</p><h2>同じ形でも、条件が変わると式が変わる</h2>
+    <div class="two-column">
+      <figure><img src="assets/cantilever.svg" width="640" height="440" alt="片持ち梁の左端を完全固定し、右端へ厚み方向の力Fを加える。断面幅bと厚みtを定義する。"><figcaption>概念図。破線の変形は誇張しています。曲げ方向に対する厚みを t とします。</figcaption></figure>
+      <div><h3>力学で固定していること</h3><ul><li>根元は変位も回転もできない完全固定。</li><li>均質・一様断面・線形弾性・小変形の細長い梁。</li><li>静解析は先端の横荷重。局所応力集中と自重は含まない。</li><li>振動解析は梁単体の自由振動。付加質量・減衰・加振応答は含まない。</li></ul><p class="callout"><strong>力 F [N] と質量 m [kg] は別の入力。</strong><br>実物のおもりは荷重と慣性の両方を持ちます。現在の F を変えても、振動モデルへ質量が追加されるわけではありません。</p></div>
+    </div>
+    <div class="two-column">
+      <figure><img src="assets/heat-path.svg" width="640" height="400" alt="先端から熱を供給し、側面断熱の梁を通って温度一定の根元へ熱が逃げる。"><figcaption>根元は温度を一定に保ち、熱を受け取る理想的な熱浴。熱は x の負方向へ流れます。</figcaption></figure>
+      <div><h3>熱で固定していること</h3><ul><li>根元温度は 298.15 K（25 ℃）。</li><li>先端から 1 W を供給し、側面は断熱。</li><li>定常・一次元・熱伝導率一定。</li><li>対流・放射・接触熱抵抗は含まない。</li></ul><p><strong>Q [W] は単位時間当たりの熱。</strong>熱量 [J] や熱流束 [W/m²] とは区別します。</p><p>入れた熱の逃げ先をなくすと、現在の定常温度式は使えません。</p></div>
+    </div>
+    <div class="table-wrap"><table><caption>基準入力：単位はSIにそろえる</caption><thead><tr><th>量</th><th>値</th><th>単位と意味</th></tr></thead><tbody><tr><th>L / b / t</th><td>0.10 / 0.03 / 0.003</td><td>m：長さ / 幅 / 厚み</td></tr><tr><th>E</th><td>70 × 10⁹</td><td>Pa：ヤング率</td></tr><tr><th>ρ</th><td>2700</td><td>kg/m³：密度</td></tr><tr><th>k</th><td>167</td><td>W/(m·K)：熱伝導率</td></tr><tr><th>F / Q</th><td>1 / 1</td><td>N：横荷重 / W：供給熱</td></tr></tbody></table></div>
+  </section>
+
+  <section id="equations">
+    <p class="chapter">02 / 式と意味</p><h2>断面が、四つの指標をつないでいる</h2>
+    <p class="formula">A = bt [m²]　　I = bt³ / 12 [m⁴]　　m = ρAL [kg]</p>
+    <p>曲げ剛性は EI [N·m²]。中立軸から遠い材料ほど断面二次モーメント I に寄与します。面積 A と I は別の量です。</p>
+    <div class="formula-grid">
+      <article><h3>公称曲げ応力</h3><p class="formula">σ = FL(t/2) / I = 6FL / (bt²)</p><p>根元の曲げモーメント FL と、最外縁までの距離 t/2 から計算。単位は <strong>Pa</strong>。穴や締結部の局所ピークは表しません。</p></article>
+      <article><h3>先端たわみ</h3><p class="formula">δ = FL³ / (3EI)</p><p>EI w″ = F(L−x) を、固定端の変位・回転ゼロで積分。単位は <strong>m</strong>。応力が合格でも、隙間や位置精度の要求に違反する場合があります。</p></article>
+      <article><h3>一次固有振動数</h3><p class="formula">f₁ = 1.875104² / (2πL²) × √(EI / ρA)</p><p>単位は <strong>Hz</strong>。固定・自由の境界条件を持つ、付加質量なしの梁の式。固有振動数だけでは振動の大きさや疲労寿命は決まりません。</p></article>
+      <article><h3>先端温度</h3><p class="formula">T_tip = T_base + QL / (kA)</p><p>単位は <strong>K</strong>。熱抵抗 L/(kA) [K/W] に供給熱 [W] を掛けると温度差。板厚2倍で半分になるのは <strong>温度上昇</strong>です。</p></article>
+    </div>
+    <p class="callout">幅2倍では剛性と質量が同じ倍率で増え、周波数は不変。厚み2倍では剛性8倍・質量2倍なので、周波数は2倍になります。いずれも今回の条件での関係です。</p>
+    <p><a href="01-lecture.md">積分・単位の確認を含む詳しい講義本文</a></p>
+  </section>
+
+  <section id="validity">
+    <p class="chapter">03 / 検証と妥当性</p><h2>式との一致と、実物との一致を分ける</h2>
+    <div class="two-column"><figure><img src="assets/verification-validation.svg" width="640" height="340" alt="式と実装を照合する検証と、計算予測と実験を照合する妥当性確認。"><figcaption>適用したい条件の範囲と、比較の目的を明示します。</figcaption></figure>
+    <div><p><strong>検証：</strong>手計算、既知解、倍率、熱収支から、意図した計算を実装できたかを調べます。</p><p><strong>妥当性確認：</strong>測定との比較で、目的に対して実機をどこまで表せるかを調べます。測定誤差、固定部の柔らかさ、付加質量等も対象です。</p><p>測定値に合わせて支持剛性を調整するのは校正。別の条件での予測確認も必要です。</p><p class="note">NASAの<a href="https://www.grc.nasa.gov/www/wind/valid/tutorial/verassess.html">検証</a>・<a href="https://www.grc.nasa.gov/www/wind/valid/tutorial/valassess.html">妥当性確認</a>の解説を、この梁ケースへ応用した整理。</p></div></div>
+  </section>
+
+  <section id="experiment">
+    <p class="chapter">04 / 設計変更の比較</p><h2>予想してから、厚みと幅を変える</h2>
+    <p>長さ・材料・静荷重・入熱・閾値を固定します。表示するのはPythonの評価器で計算した36通りの結果。3 mm・幅30 mmを基準に比べます。</p>
+    <noscript><p class="callout">比較操作にはJavaScriptが必要です。<a href="01-lecture.md">Markdown版の数値比較表</a>はそのまま読めます。</p></noscript>
+    <div class="controls">
+      <label for="thickness">厚み t：<output id="thickness-label">3.0 mm</output><input id="thickness" type="range" min="2" max="6" step="0.5" value="3"></label>
+      <label for="width">幅 b：<output id="width-label">30 mm</output><input id="width" type="range" min="15" max="60" step="15" value="30"></label>
+      <div class="buttons"><button id="thin" type="button">2 mmと比較</button><button id="reset" type="button">基準に戻す</button></div>
+    </div>
+    <div class="two-column">
+      <figure><svg id="section-diagram" viewBox="0 0 640 205" role="img" aria-labelledby="section-title section-desc"><title id="section-title">選択した梁の断面</title><desc id="section-desc">実線は選択した幅と厚み、破線は基準の30 mmと3 mm。同じ縮尺で表示。</desc><text x="30" y="36" class="svg-heading">断面：実線＝選択、破線＝基準</text><rect id="current-section" x="60" y="98" width="240" height="24"/><rect class="baseline-section" x="60" y="98" width="240" height="24"/><text id="section-label" x="30" y="180">幅30 mm × 厚み3 mm</text></svg><figcaption>幅と厚みは同じ縮尺。実物の変形は描いていません。</figcaption></figure>
+      <div><p id="overall" class="callout" aria-live="polite">データを読み込んでいます。</p><p id="mass"></p><p class="note">どの設定でも9分野が未評価です。必須制約は重み付き得点で相殺しません。</p></div>
+    </div>
+    <div id="ratios"><h3>基準に対する倍率</h3><p class="note">共通軸は0〜8倍。縦線が基準の1倍。温度の倍率は絶対温度でなく温度上昇を比較。</p><div class="axis" aria-hidden="true"><span style="left:0%">0</span><span style="left:12.5%">1</span><span style="left:25%">2</span><span style="left:50%">4</span><span style="left:100%">8倍</span></div><div id="ratio-rows"></div></div>
+    <div class="table-wrap"><table id="results"><caption>丸め前の値で制約を判定。表示単位は読みやすく換算。</caption><thead><tr><th>指標</th><th>基準</th><th>選択</th><th>条件</th><th>判定</th></tr></thead><tbody></tbody></table></div>
+    <h3>自分の環境で再現する</h3><pre><code>.\run.cmd cases\heated_cantilever.toml
+.\run.cmd cases\heated_cantilever_2mm.toml</code></pre>
+    <p>2 mmケースではたわみと周波数が違反し、終了コード2になります。ブラウザを操作したこととCLIの再現は、それぞれ別に確認します。</p>
+  </section>
+
+  <section id="integration">
+    <p class="chapter">05 / 統合する仕組み</p><h2>計算値に、条件と状態を添える</h2>
+    <div class="two-column"><figure><img src="assets/evaluation-flow.svg" width="640" height="510" alt="case.pyで入力確認、models.pyで物理計算、evaluation.pyで制約判定、cli.pyで表示。"><figcaption>個別物理の計算を、表示や合否の条件から分離します。</figcaption></figure>
+      <div><h3>評価器を追加するとき</h3><ol><li><code>case.py</code> に必要な入力を定義。</li><li><code>models.py</code> または新しいモデルモジュールに計算を実装。</li><li><code>evaluation.py</code> で値・単位・閾値・余裕・方法・状態を登録。</li><li>既知解、失敗、未評価のテストを追加。</li></ol><p>例えば疲労データがないときは、損傷ゼロで合格にせず、未評価として理由を残します。</p><p>現在は共通の寸法で各計算を実行しています。温度を弾性率や熱応力へ戻しておらず、<strong>熱構造連成ではありません。</strong></p></div>
+    </div>
+    <div class="table-wrap"><table><caption>評価状態と総合判定</caption><thead><tr><th>状態</th><th>意味</th></tr></thead><tbody><tr><th>pass</th><td>この指標・条件で合格</td></tr><tr><th>fail</th><td>制約違反</td></tr><tr><th>not_evaluated</th><td>モデルやデータがなく未評価</td></tr><tr><th>not_applicable</th><td>理由付きの対象外。初版では未使用</td></tr><tr><th>error</th><td>計算で有限値を得られない等のエラー</td></tr></tbody></table></div>
+    <p>総合判定はエラー → 違反 → 未完了 → 合格の順。3 mmケースの4指標が合格でも、9分野が未評価なので総合は未完了です。</p>
+  </section>
+
+  <section id="questions">
+    <p class="chapter">06 / 確認</p><h2>説明と実行結果で、理解を確かめる</h2>
+    <p>講義本文を参照して構いません。対話では一問ずつ、理由を含めて確認します。</p>
+    <ol class="questions"><li><h3>Q1：入力・単位・境界条件</h3><p>4つの指標について、式・入力・出力単位・成立条件を説明してください。先端にセンサー質量を付けた場合と、根元まで断熱にした場合、現在の式で何が不足しますか。</p></li><li><h3>Q2：実物と違ったら</h3><p>テスト成功、計算約247 Hz、実物約190 Hzだったとします。バグと断定できますか。調べる要因を2つ、確認方法を1つ挙げてください。190 Hzは問題用の架空値です。</p></li><li><h3>Q3：比較を再現する</h3><p>CLIで3 mmと2 mmを実行し、2 mmのたわみ・周波数・閾値、採用を妨げる制約、3 mmでも全体合格にできない理由を報告してください。</p></li><li><h3>Q4：新しい評価をつなぐ</h3><p>疲労データと荷重履歴がない場合、どの状態を返しますか。入力・計算・判定をどのファイルへ追加するかも説明してください。</p></li></ol>
+    <p class="note">この教材は回答や個人の学習履歴を保存・送信しません。表示テーマだけをこのブラウザに保存します。</p>
+  </section>
+  <footer><h2>出典と教材について</h2><p>図は本プロジェクトで作成した概念図。外部図版や写真は転載していません。物性・設計閾値は学習用の仮定です。</p><p><a href="https://ocw.mit.edu/courses/16-20-structural-mechanics-fall-2002/pages/calendar/">MIT：構造力学</a> · <a href="https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/pages/readings/">MIT：熱伝達</a> · <a href="01-lecture.md#出典と再現">詳細な出典と再現方法</a></p><p><a href="01-lecture.md">図付きMarkdown版</a> · <a href="01-heated-cantilever.md">実習ガイド</a> · <a href="../architecture.md">統合アーキテクチャ</a></p><p class="note">2026-09-07 / AI支援教材 / 公開範囲・配布ライセンスは別途決定</p></footer>
+</main>
+</body></html>

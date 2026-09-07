@@ -5,7 +5,9 @@
 ## 第一ケース
 
 - [MIT OCW Structural Mechanics](https://ocw.mit.edu/courses/16-20-structural-mechanics-fall-2002/): 梁・構造力学を学ぶ講義の入口。
-- [Oxford: Structural vibration資料](https://eng.ox.ac.uk/media/9248/sim.pdf): 一様片持ち梁の固有振動数とモードを確認する資料。
+- [FunctionBay: A cantilever beam・式(5.41)](https://help.functionbay.com/2026/RecurDynHelp/Analysis/Analysis_ch04_s05_03.html): 一様片持ち梁の固有角振動数の解析式。Hzへは2πで割る。
+- [NASA: Verification](https://www.grc.nasa.gov/www/wind/valid/tutorial/verassess.html) / [Validation](https://www.grc.nasa.gov/www/wind/valid/tutorial/valassess.html): 数値モデルの実装検証と、目的・適用範囲に対する妥当性確認の区別。
+- [MIT: Intermediate Heat and Mass Transfer](https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/pages/readings/): Fourier則と熱抵抗の学習入口。
 - 応力・たわみはEuler–Bernoulli梁理論、定常熱伝導はFourier則から導く。実装式・境界条件・適用制限は [第一ケース](learning/01-heated-cantilever.md) に明記。
 
 ## 統合と形状探索
