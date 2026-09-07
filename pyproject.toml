@@ -8,10 +8,13 @@ version = "0.1.0"
 description = "Learning mechanical design disciplines and multidisciplinary constraint integration"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["numpy==2.3.3", "scipy==1.16.2"]
 
 [project.scripts]
 mech-study = "mech_design.cli:main"
+
+[project.optional-dependencies]
+figures = ["matplotlib==3.10.7"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

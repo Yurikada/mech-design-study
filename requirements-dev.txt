@@ -2,6 +2,8 @@
 setuptools==80.9.0
 pytest==8.4.2
 ruff==0.12.12
+numpy==2.3.3
+scipy==1.16.2
 # Resolved transitive dependencies; Windows-only dependency uses an environment marker.
 colorama==0.4.6; sys_platform == "win32"
 iniconfig==2.3.0

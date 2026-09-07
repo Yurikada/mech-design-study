@@ -6,7 +6,9 @@ M1の講義は `02-design-comparison.md`。GitHubで表示できるMarkdown表�
 
 ## ブラウザで読む
 
-M2の導入資料は `03-fem.md` / `03-fem.html`。共通の `assets/lecture.css` と新規の `assets/fem-mesh-and-order.svg` を使用する。M2ソルバーの実行結果はまだないため、計画・解析的に導く性質・実測値を混同しない。ブラウザ版は要点、Markdown版は検証基準を含む詳しい本文。テーマ以外の入力・個人の解答は保存しない。
+M2の導入資料は `03-fem.md` / `03-fem.html`。共通の `assets/lecture.css` と `assets/fem-mesh-and-order.svg` を使用する。M2aの梁FEMは実装済み、M2bは計画段階。ブラウザ版は要点、Markdown版は実行方法・検証基準・実際の計算結果を含む。テーマ以外の入力・個人の解答は保存しない。
+
+M2aの数値図は独立した科学図としてMatplotlibで出力する。`run.cmd fem cases\cantilever_fem.toml --output outputs\new-fem.json` の後、描画用環境（任意依存 `.[figures]`）で `python scripts/plot_fem_results.py outputs/new-fem.json docs/learning/assets` を実行する。SVG/PNGと入力・結果JSONを一緒に更新し、図を目視確認する。CIは保存入力・コードと数値の再現を検査する。描画ライブラリはFEM実行の必須依存ではない。
 
 M2ブラウザQAは `scripts/verify_fem_lecture.cjs`。後述のPlaywright環境で実行し、18表示条件、ローカルリンク、SVG文字範囲を確認する。結果はGit対象外の `outputs/fem-lecture-qa` に保存する。
 

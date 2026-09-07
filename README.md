@@ -77,6 +77,22 @@ CLIの終了コード: `0` = 評価できた項目は合格（未評価を含み
 
 Linuxや任意の作業ディレクトリからは、インストール済みPythonで `python -m mech_design compare <比較TOMLのパス>` を使える。[講義2](docs/learning/02-design-comparison.md)で入力・出力と判断を確認する。
 
+## M2a：梁FEMを検証する
+
+```powershell
+.\run.cmd fem cases\cantilever_fem.toml
+.\run.cmd fem cases\cantilever_fem.toml --output outputs\my-fem.json
+.\run.cmd fem --replay outputs\my-fem.json
+```
+
+既存環境へ更新するときは `.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt` と `.\.venv\Scripts\python.exe -m pip install --no-build-isolation -e .` を実行する。M2aには固定版NumPy 2.3.3とSciPy 1.16.2を使う。
+
+三次Hermite梁・整合質量・根元完全固定の静解析と第1〜3モードを、1/2/4/8/16要素で計算する。たわみ・反力・モード形状・解析解誤差・無次元残差・設定とメッシュをJSONに保存する。1要素の第3モードは自由度不足で未評価。保存ファイルは新規作成のみ、再計算には保存時と同じコード・NumPy/SciPy版が必要。
+
+FEM検証の合格と設計全体の合格は別。梁の応力・たわみ・周波数は最細分割のFEM値、熱は従来の解析式で評価し、残る9分野は未評価のまま。終了コードは0 = 検証成功・評価済み制約合格、1 = 入力/計算/出力エラー、2 = 検証または設計制約違反、3 = 検証材料不足。`--require-complete` では未評価分野が残る場合も3となる。
+
+[講義3の実測結果と図](docs/learning/03-fem.md)を参照。M2bの2次元要素比較は今後の課題。
+
 ## 開発と検証
 
 ```powershell

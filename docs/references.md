@@ -12,6 +12,8 @@
 
 ## M2：有限要素とメッシュの検証
 
+- [SciPy: eigh](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html): 対称一般化固有値問題。実装では対称性・正定値を別途検査し、質量行列の逆行列を明示的に作らず解く。実行版はSciPy 1.16.2、NumPy 2.3.3に固定。
+
 - [TU Delft: Euler–Bernoulli beam elements](https://interactivetextbooks.citg.tudelft.nl/computational-modelling/structural_linear/euler_bernouilli.html): 適合Hermite梁の連続性、2節点4自由度、三次変位補間。
 - [TU Delft: FEM for an Euler–Bernoulli beam](https://interactivetextbooks.citg.tudelft.nl/computational-modelling/dynamics/Exercises/str_elem_dyn_workshops/Workshop_FEM_dyn_beam.html): 離散化、形状関数、剛性・質量、動解析への組み立て。
 - [Abaqus: Bending benchmark](https://docs.software.vt.edu/abaqusv2025/English/SIMACAEBMKRefMap/simabmk-c-linbending.htm): 次数・積分法・要素形状・ゆがみを変えた曲げ問題。製品固有の要素比較を普遍的な優劣へ一般化しない。
