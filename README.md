@@ -35,7 +35,7 @@ Python 3.12以上が必要（このPCの基準はPython 3.13）。リポジト�
 .\run.cmd
 ```
 
-既存のConda環境には依存を追加せず、専用 `.venv` を使う。実行部は標準ライブラリのみ。開発ツールとその依存は `requirements-dev.txt` に固定する。Linux側は次の通り。
+既存のConda環境には依存を追加せず、専用 `.venv` を使う。解析解と比較の計算部は標準ライブラリ、梁FEMはNumPy/SciPyを使う。開発ツールと実行依存は `requirements-dev.txt` に固定する。Linux側は次の通り。
 
 ```bash
 python3 -m venv .venv
