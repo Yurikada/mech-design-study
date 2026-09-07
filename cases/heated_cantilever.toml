@@ -1,0 +1,23 @@
+# Synthetic learning input, not a certified material or product specification.
+schema_version = 1
+name = "Heated cantilever reference"
+
+[beam]
+length_m = 0.10
+width_m = 0.03
+thickness_m = 0.003
+young_modulus_pa = 70e9
+density_kg_m3 = 2700.0
+thermal_conductivity_w_mk = 167.0
+tip_force_n = 1.0
+
+[thermal]
+heat_w = 1.0
+base_temperature_k = 298.15
+
+[limits]
+# Teaching thresholds, NOT material allowables or industry requirements.
+max_stress_pa = 30e6
+max_tip_deflection_m = 0.0001
+min_first_frequency_hz = 200.0
+max_tip_temperature_k = 313.15
