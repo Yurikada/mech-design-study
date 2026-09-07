@@ -10,6 +10,14 @@
 - [MIT: Intermediate Heat and Mass Transfer](https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/pages/readings/): Fourier則と熱抵抗の学習入口。
 - 応力・たわみはEuler–Bernoulli梁理論、定常熱伝導はFourier則から導く。実装式・境界条件・適用制限は [第一ケース](learning/01-heated-cantilever.md) に明記。
 
+## M2：有限要素とメッシュの検証
+
+- [TU Delft: Euler–Bernoulli beam elements](https://interactivetextbooks.citg.tudelft.nl/computational-modelling/structural_linear/euler_bernouilli.html): 適合Hermite梁の連続性、2節点4自由度、三次変位補間。
+- [TU Delft: FEM for an Euler–Bernoulli beam](https://interactivetextbooks.citg.tudelft.nl/computational-modelling/dynamics/Exercises/str_elem_dyn_workshops/Workshop_FEM_dyn_beam.html): 離散化、形状関数、剛性・質量、動解析への組み立て。
+- [Abaqus: Bending benchmark](https://docs.software.vt.edu/abaqusv2025/English/SIMACAEBMKRefMap/simabmk-c-linbending.htm): 次数・積分法・要素形状・ゆがみを変えた曲げ問題。製品固有の要素比較を普遍的な優劣へ一般化しない。
+- [COMSOL: Mesh refinement study](https://www.comsol.com/support/knowledgebase/1261): h/pの変更、評価量を決めた収束確認。
+- [COMSOL: Singularities when meshing](https://www.comsol.com/blogs/how-identify-resolve-singularities-model-meshing/): 特異点と局所応力、収束する評価量の区別。比較点はメッシュ依存の距離ではなく物理座標で固定する。
+
 ## 統合と形状探索
 
 - [Ansys optiSLang](https://ansys.synopsys.com/en-gb/products/connect/ansys-optislang): 解析のプロセス統合・設計最適化。

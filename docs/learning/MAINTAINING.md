@@ -6,6 +6,10 @@ M1の講義は `02-design-comparison.md`。GitHubで表示できるMarkdown表�
 
 ## ブラウザで読む
 
+M2の導入資料は `03-fem.md` / `03-fem.html`。共通の `assets/lecture.css` と新規の `assets/fem-mesh-and-order.svg` を使用する。M2ソルバーの実行結果はまだないため、計画・解析的に導く性質・実測値を混同しない。ブラウザ版は要点、Markdown版は検証基準を含む詳しい本文。テーマ以外の入力・個人の解答は保存しない。
+
+M2ブラウザQAは `scripts/verify_fem_lecture.cjs`。後述のPlaywright環境で実行し、18表示条件、ローカルリンク、SVG文字範囲を確認する。結果はGit対象外の `outputs/fem-lecture-qa` に保存する。
+
 GitHubのファイル画面ではHTMLはソース表示になる。clone／ダウンロード後、`docs/learning/01-lecture.html` をブラウザで開く。HTMLと `assets` フォルダを一緒に置く。外部フォント・CDN・API・Webサーバーは不要。将来GitHub Pagesで配信する場合にも相対パスで動作するが、Pagesの設定と一般公開は未実施。
 
 表示テーマだけをlocalStorageに保存する。回答・個人の学習履歴は保存も送信もしない。

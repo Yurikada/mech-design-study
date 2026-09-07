@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" role="img" aria-labelledby="title desc">
+<title id="title">メッシュ細分化と要素次数の違い</title>
+<desc id="desc">上段は同じ長さの領域を2要素から4要素へ細分化する例。下段は領域を分割せず、三角形を3節点から6節点へ、四角形を4節点から9節点へ変える次数変更の概念図。塗りつぶし点は頂点、白抜き点は追加節点。変形や解析結果は描いていない。</desc>
+<!-- Original educational schematic, deliberately on a white sheet for GitHub and print. -->
+<rect width="640" height="720" fill="#fff"/>
+<g font-family="Segoe UI, Yu Gothic, sans-serif" fill="#182933" font-size="25">
+<text x="24" y="40" font-weight="700">h：領域を細かく分ける</text>
+<text x="24" y="86">2要素</text><text x="24" y="151">4要素</text>
+<g stroke="#165f86" stroke-width="4" fill="none">
+<path d="M150 80H594 M150 145H594"/>
+</g>
+<g fill="#165f86">
+<circle cx="150" cy="80" r="7"/><circle cx="372" cy="80" r="7"/><circle cx="594" cy="80" r="7"/>
+<circle cx="150" cy="145" r="7"/><circle cx="261" cy="145" r="7"/><circle cx="372" cy="145" r="7"/><circle cx="483" cy="145" r="7"/><circle cx="594" cy="145" r="7"/>
+</g>
+<text x="150" y="198">同じ領域・同じ要素次数</text>
+<path d="M24 224H616" stroke="#c6d1d6"/>
+<text x="24" y="267" font-weight="700">p：要素内の近似次数を上げる</text>
+<text x="54" y="316">三角形</text><text x="366" y="316">四角形</text>
+<g stroke="#165f86" stroke-width="3" fill="#e6f0f6">
+<path d="M58 458L138 340L258 458Z"/>
+<path d="M376 340H574V458H376Z"/>
+<path d="M58 630L138 512L258 630Z"/>
+<path d="M376 512H574V630H376Z"/>
+</g>
+<g fill="#165f86">
+<circle cx="58" cy="458" r="7"/><circle cx="138" cy="340" r="7"/><circle cx="258" cy="458" r="7"/>
+<circle cx="376" cy="340" r="7"/><circle cx="574" cy="340" r="7"/><circle cx="574" cy="458" r="7"/><circle cx="376" cy="458" r="7"/>
+<circle cx="58" cy="630" r="7"/><circle cx="138" cy="512" r="7"/><circle cx="258" cy="630" r="7"/>
+<circle cx="376" cy="512" r="7"/><circle cx="574" cy="512" r="7"/><circle cx="574" cy="630" r="7"/><circle cx="376" cy="630" r="7"/>
+</g>
+<g fill="#fff" stroke="#165f86" stroke-width="3">
+<circle cx="98" cy="571" r="7"/><circle cx="198" cy="571" r="7"/><circle cx="158" cy="630" r="7"/>
+<circle cx="475" cy="512" r="7"/><circle cx="574" cy="571" r="7"/><circle cx="475" cy="630" r="7"/><circle cx="376" cy="571" r="7"/><circle cx="475" cy="571" r="7"/>
+</g>
+<text x="58" y="495">T3：一次</text><text x="376" y="495">Q4：双一次</text>
+<text x="58" y="671">T6：二次</text><text x="376" y="671">Q9：双二次</text>
+<text x="24" y="706" font-size="20">節点配置の例。要素の良否を順位付けする図ではない。</text>
+</g></svg>

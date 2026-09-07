@@ -107,6 +107,7 @@ docs/                     学習課題、拡張計画、設計判断、出典
 
 - [図付き講義：式から設計判断へ](docs/learning/01-lecture.md) / [ブラウザ版（clone後に開く）](docs/learning/01-lecture.html)
 - [講義2：制約を満たす設計案を比較する](docs/learning/02-design-comparison.md)
+- [講義3：メッシュ・要素形状・次数を選ぶ](docs/learning/03-fem.md) / [ブラウザ版](docs/learning/03-fem.html)
 - [講義の閲覧・更新・公開準備](docs/learning/MAINTAINING.md)
 - [12分野と統合技術の学習ロードマップ](docs/roadmap.md)
 - [第一ケースの式・前提・課題](docs/learning/01-heated-cantilever.md)
