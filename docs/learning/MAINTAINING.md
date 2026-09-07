@@ -2,6 +2,8 @@
 
 講義本文は `01-lecture.md`、ブラウザ版は `01-lecture.html`。元の実習は `01-heated-cantilever.md`。本文・図の説明を変更した場合は両版の意味をそろえる。
 
+M1の講義は `02-design-comparison.md`。GitHubで表示できるMarkdown表・Mermaid図と、既存の梁SVGを使用する。数値表を更新するときは同資料のPython例をリポジトリ直下で再実行する。M1の専用HTMLと比較CLIはまだ未実装。
+
 ## ブラウザで読む
 
 GitHubのファイル画面ではHTMLはソース表示になる。clone／ダウンロード後、`docs/learning/01-lecture.html` をブラウザで開く。HTMLと `assets` フォルダを一緒に置く。外部フォント・CDN・API・Webサーバーは不要。将来GitHub Pagesで配信する場合にも相対パスで動作するが、Pagesの設定と一般公開は未実施。
