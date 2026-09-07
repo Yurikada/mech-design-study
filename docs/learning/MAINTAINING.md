@@ -2,7 +2,7 @@
 
 講義本文は `01-lecture.md`、ブラウザ版は `01-lecture.html`。元の実習は `01-heated-cantilever.md`。本文・図の説明を変更した場合は両版の意味をそろえる。
 
-M1の講義は `02-design-comparison.md`。GitHubで表示できるMarkdown表・Mermaid図と、既存の梁SVGを使用する。数値表を更新するときは同資料のPython例をリポジトリ直下で再実行する。M1の専用HTMLと比較CLIはまだ未実装。
+M1の講義は `02-design-comparison.md`。GitHubで表示できるMarkdown表・Mermaid図と、既存の梁SVGを使用する。数値表を更新するときは同資料のPython例と比較CLIを再実行する。比較CLIは `run.cmd compare cases\heated_cantilever_comparison.toml`。M1の専用HTMLは未実装。
 
 ## ブラウザで読む
 

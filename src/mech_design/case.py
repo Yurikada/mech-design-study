@@ -59,9 +59,13 @@ class Case:
 
 def load_case(path: Path) -> Case:
     with path.open("rb") as stream:
-        raw = tomllib.load(stream)
+        return parse_case(tomllib.load(stream))
+
+
+def parse_case(raw: dict) -> Case:
+    """Validate either TOML input or a saved, self-contained input snapshot."""
     expected = {"schema_version", "name", "beam", "thermal", "limits"}
-    if raw.keys() != expected:
+    if not isinstance(raw, dict) or raw.keys() != expected:
         raise ValueError(f"Case fields must be exactly {sorted(expected)}")
     if type(raw["schema_version"]) is not int or raw["schema_version"] != 1:
         raise ValueError("Only schema_version = 1 is supported")

@@ -28,3 +28,5 @@ jobs:
       - run: python -m pytest -q
       - run: python scripts/build_lecture_data.py --check
       - run: python -m mech_design cases/heated_cantilever.toml --json
+      - run: python -m mech_design compare cases/heated_cantilever_comparison.toml --output outputs/comparison.json --json
+      - run: python -m mech_design compare --replay outputs/comparison.json --json

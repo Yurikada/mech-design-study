@@ -8,7 +8,15 @@ from mech_design.evaluation import evaluate
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Evaluate a mechanical design learning case")
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "compare":
+        from mech_design.comparison_cli import main as compare_main
+
+        return compare_main(argv[1:])
+    parser = argparse.ArgumentParser(
+        description="Evaluate a mechanical design learning case",
+        epilog="For multi-case comparison: mech-study compare --help",
+    )
     parser.add_argument("case", type=Path)
     parser.add_argument("--json", action="store_true", help="Emit SI-valued structured results")
     parser.add_argument(

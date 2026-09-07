@@ -1,0 +1,36 @@
+# Synthetic teaching requirements. Every design uses the same material, load and limits.
+schema_version = 1
+name = "Heated cantilever geometry comparison"
+requirements_version = "heated_support_study_v1"
+objective = "minimize_mass"
+base_case = "heated_cantilever.toml"
+
+[requirements]
+required_length_m = 0.100
+max_width_m = 0.045
+max_thickness_m = 0.004
+# Optional: max_mass_kg = 0.030
+
+[[designs]]
+id = "A"
+length_m = 0.100
+width_m = 0.030
+thickness_m = 0.003
+
+[[designs]]
+id = "B"
+length_m = 0.100
+width_m = 0.030
+thickness_m = 0.002
+
+[[designs]]
+id = "C"
+length_m = 0.100
+width_m = 0.045
+thickness_m = 0.003
+
+[[designs]]
+id = "D"
+length_m = 0.070
+width_m = 0.030
+thickness_m = 0.002

@@ -59,6 +59,24 @@ python3 -m venv .venv
 
 CLIの終了コード: `0` = 評価できた項目は合格（未評価を含み得る）、`1` = 入力／計算エラー、`2` = 制約違反。`--require-complete` を付けると未評価が残る場合は `3`。自動判定で完全評価を要求するときは必ずこのオプションを使う。
 
+## M1：複数案を比較する
+
+```powershell
+.\run.cmd compare cases\heated_cantilever_comparison.toml
+.\run.cmd compare cases\heated_cantilever_comparison.toml --output outputs\comparison.json
+.\run.cmd compare --replay outputs\comparison.json --json
+```
+
+比較TOMLは共通の基準ケースと、各案のID・長さ・幅・厚みを指定する。材料・荷重・熱条件・性能閾値は共通。各案への荷重などの上書きは拒否し、変更された項目名を表示する。基準ケースへの相対パスは比較TOMLの場所を基準に解決する。
+
+教材の4案ではA・Cが今回の制約を満たし、最軽量候補はA。Bはたわみと周波数、Dは長さの要求に違反する。`eligible` は今回の比較条件に限った候補で、9分野が未評価の `physical_overall=incomplete` と併記する。
+
+`--output` は完全なJSONを新規ファイルへ保存する。既存ファイルを上書きしないため、再実行時は別の出力名を指定する。保存結果には全入力、要求版、モデル版、境界条件、指標・単位・閾値・margin・未評価、入力とコードのSHA-256を含む。`--replay` は元のTOMLなしで保存入力から再計算する。コードが変わった場合は再現計算を拒否するため、元のGitリビジョンを使用する。
+
+比較コマンドの終了コードは `0` = 計算が正常終了して候補がある、`1` = 入力・計算・出力エラー、`2` = 候補なし。`--require-complete` では、候補があってもいずれかの案に未評価があれば `3`。除外案の存在だけでは `2` にしない。計算エラーが残る場合は他案の結果を保持するが、最軽量候補を確定しない。
+
+Linuxや任意の作業ディレクトリからは、インストール済みPythonで `python -m mech_design compare <比較TOMLのパス>` を使える。[講義2](docs/learning/02-design-comparison.md)で入力・出力と判断を確認する。
+
 ## 開発と検証
 
 ```powershell
@@ -78,6 +96,9 @@ src/mech_design/case.py    入力スキーマ・適用範囲チェック
 src/mech_design/models.py  個別の物理モデル
 src/mech_design/evaluation.py  共通の制約評価・未評価管理
 src/mech_design/cli.py     ケース実行・JSON結果
+src/mech_design/comparison_input.py  共通条件・要求・寸法案の入力
+src/mech_design/comparison.py  比較・入力保存・再現計算
+src/mech_design/comparison_cli.py  比較表・JSONの表示
 tests/                    数値と統合の検証
 docs/                     学習課題、拡張計画、設計判断、出典
 ```
