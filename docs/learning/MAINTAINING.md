@@ -18,11 +18,13 @@ GitHubのファイル画面ではHTMLはソース表示になる。clone／ダ�
 
 ## 一問一答の更新
 
-講義1〜3の一問一答は `assets/lecture-qa.json` を正本とする。問い・解答例・解説・式・照合先を更新し、`python scripts/build_lecture_qa.py` で各Markdownと既存HTMLの生成マーカー内へ反映する。`--check` で両版の整合を検査する。講義2はMarkdown版のみ。個人の発言や採点履歴ではなく、対話で扱った論点を汎用の問題として記す。
+講義1以降の一問一答は `assets/lecture-qa.json` を正本とする。問い・解答例・解説・式・照合先を更新し、`python scripts/build_lecture_qa.py` で各Markdownと既存HTMLの生成マーカー内へ反映する。`--check` で両版の整合を検査する。講義2はMarkdown版のみ。個人の発言や採点履歴ではなく、対話で扱った論点を汎用の問題として記す。以降の新しい講義でも必ず一問一答と解説を用意し、lectures配列の末尾に追加する。
 
 各問の解答と解説は標準のdetails要素で開閉でき、JavaScriptなしでも閲覧できる。GitHubではMarkdownのプレビューで開く。追記後は解答をすべて開いた状態でも、モバイルと各テーマで横にはみ出さないことを確認する。
 
 既存の `verify_lecture.cjs` と `verify_fem_lecture.cjs` は、共通の `qa_review.cjs` で正本との本文照合・キーボード開閉を確認し、すべての解説を開いて表示監査する。
+
+講義4は `04-fem-benchmark.md` / `.html` と概念図 `assets/pure-bending-study.svg`。`node scripts/verify_fem_lecture.cjs 04-fem-benchmark` で18表示条件・Q&A・リンク・SVGを確認する。検査結果は `outputs/benchmark-lecture-qa`。参照値は解析式による値であり、未実装のM2bのFEM結果として扱わない。
 
 ## 数値と比較表の再生成
 

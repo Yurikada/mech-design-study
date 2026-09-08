@@ -6,7 +6,10 @@ const { pathToFileURL } = require("node:url");
 const assert = require("node:assert/strict");
 const checkReview = require("./qa_review.cjs");
 const root = path.resolve(__dirname, "..");
-const output = path.join(root, "outputs", "fem-lecture-qa");
+const stem = process.argv[2] || "03-fem";
+assert.ok(["03-fem", "04-fem-benchmark"].includes(stem));
+const benchmark = stem === "04-fem-benchmark";
+const output = path.join(root, "outputs", benchmark ? "benchmark-lecture-qa" : "fem-lecture-qa");
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
@@ -18,8 +21,8 @@ fs.mkdirSync(output, { recursive: true });
   page.on("requestfailed", request => errors.push(request.url()));
   const measurements = [];
   try {
-    await page.goto(pathToFileURL(path.join(root, "docs/learning/03-fem.html")).href);
-    await checkReview(page, "03-fem");
+    await page.goto(pathToFileURL(path.join(root, `docs/learning/${stem}.html`)).href);
+    await checkReview(page, stem);
     const links = await page.locator("a[href]").evaluateAll(elements => elements.map(e => e.getAttribute("href")));
     for (const link of links) {
       if (link.startsWith("#")) assert.equal(await page.locator(link).count(), 1);
@@ -57,12 +60,13 @@ fs.mkdirSync(output, { recursive: true });
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.locator("#theme").selectOption("light");
     await page.screenshot({ path: path.join(output, "desktop.png"), fullPage: true });
-    await page.locator("#choices img").screenshot({ path: path.join(output, "mesh-and-order.png") });
+    await page.locator(benchmark ? "#model img" : "#choices img").screenshot({ path: path.join(output, "diagram.png") });
     await page.setViewportSize({ width: 320, height: 900 });
     await page.locator("#theme").selectOption("dark");
-    await page.locator("#choices").screenshot({ path: path.join(output, "mobile-dark.png") });
-    await page.locator("#l3-q23").screenshot({ path: path.join(output, "q4-qa-mobile-dark.png") });
-    await page.goto(pathToFileURL(path.join(root, "docs/learning/assets/fem-mesh-and-order.svg")).href);
+    await page.locator(benchmark ? "#model" : "#choices").screenshot({ path: path.join(output, "mobile-dark.png") });
+    await page.locator(benchmark ? "#l4-q06" : "#l3-q23").screenshot({ path: path.join(output, "question-mobile-dark.png") });
+    const figure = benchmark ? "pure-bending-study.svg" : "fem-mesh-and-order.svg";
+    await page.goto(pathToFileURL(path.join(root, `docs/learning/assets/${figure}`)).href);
     const clipped = await page.evaluate(() => {
       const view = document.documentElement.viewBox.baseVal;
       return [...document.querySelectorAll("text")].filter(el => {
@@ -73,6 +77,6 @@ fs.mkdirSync(output, { recursive: true });
     assert.deepEqual(clipped, []);
     assert.deepEqual(errors, []);
     fs.writeFileSync(path.join(output, "audit.json"), JSON.stringify({ measurements, clipped, errors }, null, 2));
-    console.log("M2 lecture: 18 viewport/theme checks, local links, SVG text bounds passed.");
+    console.log(`${stem}: 18 viewport/theme checks, Q&A, local links, SVG text bounds passed.`);
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

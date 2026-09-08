@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="純曲げの参照解を使い、FEMの要素・メッシュ・積分法を公平に比較する講義。一問一答と解説付き。">
+<title>講義4：FEMの比較実験を設計する | mech-design-study</title>
+<link rel="stylesheet" href="assets/lecture.css"></head>
+<body><a class="skip" href="#main">本文へ移動</a>
+<header class="masthead"><div class="masthead-inner"><a href="04-fem-benchmark.md">mech-design-study / 講義4</a><label class="theme-control">表示<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></div></header>
+<main id="main"><div class="intro"><p class="eyebrow">MECHANICAL DESIGN STUDY · LESSON 04</p><h1>FEMの比較実験を設計する</h1>
+<p class="lead">要素の性質を、解の分かる問題で確かめる。物理条件をそろえ、誤差・自由度数・計算状態を比較します。</p>
+<p class="note">M2b実装前の講義です。以下は解析式から求めた参照値であり、2D FEMの結果や計算時間はまだありません。</p></div>
+<nav aria-label="講義の目次"><a href="#model">1. 純曲げモデル</a><a href="#load">2. 荷重と参照解</a><a href="#comparison">3. 比較条件</a><a href="#checks">4. 判定基準</a><a href="#review-qa">一問一答と解説</a></nav>
+<section id="model"><h2>最初は、曲率が一定の純曲げ</h2><div class="two-column"><figure><img src="assets/pure-bending-study.svg" width="640" height="440" alt="左端固定の長方形に右端の軸方向分布荷重を与える。合力は0、合モーメントはM。"><figcaption>独自の概念図。寸法・矢印は模式的な表現です。</figcaption></figure><div>
+<p>長さ方向x、曲げ深さ方向y、面外方向zの長方形を使います。薄い面外方向への荷重がない、平面応力の面内曲げです。従来の加熱支持板とは別の教育用検証ケースです。</p>
+<p>長さL＝100 mm、深さH＝10 mm、面外厚さs＝1 mm、E＝70 GPa、ν＝0、右端の合モーメントM＝0.1 N·mとします。ν＝0は検証用の選択で、実材料の同定値ではありません。</p>
+<p>深さHと面外厚さsを区別します。断面二次モーメントは <span class="formula">I＝sH³/12</span> です。</p></div></div></section>
+<section id="load"><h2>同じ合力だけでなく、同じ荷重分布</h2>
+<p>左端x＝0のu,vを固定し、上下面は無荷重。右端の表面力を <span class="formula">p_x＝−My/I、p_y＝0</span> とします。pの単位はPaです。</p>
+<p class="formula">∫p_x s dy＝0　／　−∫y p_x s dy＝M</p><p>積分区間は−H/2からH/2です。上半分と下半分で力は相殺しますが、モーメントは残ります。</p>
+<p>2D連続体節点には回転自由度がありません。各要素の境界形関数Nを使い、分布から整合節点荷重を求めます。</p>
+<p class="formula">f_e＝∫ Nᵀp s dΓ　（Pa × m × m＝N）</p>
+<p>節点が増えても、各節点へ同じ数値の力を配るのではなく、同じ表面力を積分します。</p>
+<h3>参照変位が拘束も満たすことを確認する</h3><p class="formula">κ＝M/(EI)、u＝−κxy、v＝κx²/2</p><p class="formula">σ_x＝−My/I、σ_y＝τ_xy＝0</p>
+<p>ν＝0なら材料則と釣合いを満たし、左端ではu＝v＝0です。右端の応力も指定の表面力に一致します。</p>
+<div class="table-wrap"><table><caption>解析式による参照値。FEMの計算結果ではありません。</caption><thead><tr><th>照合量</th><th>値</th></tr></thead><tbody>
+<tr><td>断面二次モーメント</td><td>8.333333×10⁻¹¹ m⁴</td></tr><tr><td>曲率</td><td>0.017142857 m⁻¹</td></tr><tr><td>先端中央たわみ ML²/(2EI)</td><td>0.085714286 mm</td></tr><tr><td>上下縁の応力の大きさ</td><td>6.000 MPa</td></tr><tr><td>ひずみエネルギー M²L/(2EI)</td><td>8.571429×10⁻⁵ J</td></tr></tbody></table></div>
+<p class="callout">νだけを変えて、この参照変位を使い続けないでください。ν≠0の純曲げには横ひずみに対応するvのy²項が必要で、左端全体のv＝0と一般には両立しません。</p></section>
+<section id="comparison"><h2>何を変えた効果なのかを分ける</h2><ol><li>規則格子で要素種類・次数を比較。</li><li>同じ要素・積分法でx/y方向を細分化。</li><li>他を固定して内部節点の位置、または積分法を変更。</li></ol>
+<p>形状・物性・荷重分布・拘束を共有します。ゆがみの比較でも外形を変えず、中間節点の配置規約を記録します。</p>
+<div class="table-wrap"><table><caption>8×2セルの例。三角形は各セルを2分。共有節点を重複せず、左端u,vを拘束。</caption><thead><tr><th>要素</th><th>要素数</th><th>節点数</th><th>自由度数</th></tr></thead><tbody><tr><td>T3</td><td>32</td><td>27</td><td>48</td></tr><tr><td>Q4</td><td>16</td><td>27</td><td>48</td></tr><tr><td>T6</td><td>32</td><td>85</td><td>160</td></tr><tr><td>Q9</td><td>16</td><td>85</td><td>160</td></tr></tbody></table></div>
+<p>要素数と未知数は違います。同じ自由度数でも近似空間は異なります。次数の効果と、同程度の自由度での効率を分けて評価します。</p>
+<p>一様材料・アフィン写像での剛性積分を基準として、T3は三角形1点、T6は3点、Q4は2×2点、Q9は3×3点を初期案とします。非アフィンなゆがみでは積分精度も再確認します。Q4の安定化なし1点積分は異常検出用として扱います。</p></section>
+<section id="checks"><h2>結果を見る前に、判定基準を決める</h2><p>定数ひずみのパッチテスト、剛体運動、荷重の釣合い、拘束後の剛性、残差を先に確認します。その後、次の学習用初期目標を使います。</p>
+<ul><li>先端たわみ・エネルギーの参照誤差：各0.1%以下。</li><li>固定位置の応力誤差：1%以下。例は上縁x/L＝0.45、y＝H/2。端部を避け、要素側の未平均値を保存します。</li><li>参照値0のσ_y・τ_xyは0で割らず、最大絶対値を6 MPaで正規化して報告。</li><li>根元の合反力0、反力モーメント−Mを確認。力の尺度にはM/Hなどを使います。</li><li>不成立のerrorはランキングから除外し、正常な精度不足は誤差とともに残します。</li></ul>
+<p>純曲げは二次要素が解を含むため、最初から丸め誤差程度で一致する可能性があります。一般的な収束の証拠にはせず、次に曲率が変わる荷重問題を追加します。</p>
+<p>時間は未測定です。実装後は同じ環境・ソルバーで組み立て・求解・後処理を分け、準備実行後の複数回の中央値などを記録します。</p><p><a href="04-fem-benchmark.md">式・前提・比較計画を含む詳しいMarkdown版</a></p></section>
+<!-- BEGIN GENERATED QA -->
+<section id="review-qa" class="review-qa">
+<h2>一問一答と解説</h2>
+<p>各問でいったん考え、解答例と解説を開いて確認する。対話で扱った論点を汎用の教材として再構成したもので、個人の回答・成績・実行記録ではない。解答例を読んだことと、自分で説明・実行できたことは別に確認する。</p>
+<figure><img src="assets/pure-bending-study.svg" alt="純曲げのモデルと、参照解・近似変更・結果検証の手順"></figure>
+<article class="qa-item" id="l4-q01">
+<h3>L4-Q01</h3><p><strong>問い：</strong>一様なEIの部材で、先端横荷重Fの場合と端部モーメントMだけの場合では、曲率の長さ方向分布はどう違うか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>先端力ではκ(x)=F(L−x)/(EI)と変化し、純曲げではκ=M/(EI)で一定。</p>
+<p><strong>解説：</strong>この講義のMは右端の分布表面力で与える合モーメント。一定曲率なら二次の変位場を参照解として使え、要素の表現能力を確かめやすい。先端力ケースと同じ荷重問題ではない。</p>
+</details></article>
+<article class="qa-item" id="l4-q02">
+<h3>L4-Q02</h3><p><strong>問い：</strong>この検証でPoisson比ν=0を選ぶ理由は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>単純な純曲げ参照変位と、左端全体のu=v=0を両立させるため。</p>
+<p><strong>解説：</strong>ν≠0では横ひずみに対応するvのy²項が必要になる。参照解が材料則だけでなく、実際に与える拘束も満たすかを確認する。ν=0は実材料に合わせた値ではなく、検証のための設定。</p>
+</details></article>
+<article class="qa-item" id="l4-q03">
+<h3>L4-Q03</h3><p><strong>問い：</strong>曲げ深さHを2倍にすると、他を固定した断面二次モーメントIは何倍か。面外厚さsではどうか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>Hを2倍なら8倍、sを2倍なら2倍。</p>
+<p><strong>解説：</strong>I=sH³/12。2D図面内の曲げ深さと、平面応力モデルの面外厚さは異なる。M0の幅・厚みという名称だけで対応付けず、曲げ軸と断面を確認する。</p>
+</details></article>
+<article class="qa-item" id="l4-q04">
+<h3>L4-Q04</h3><p><strong>問い：</strong>右端のp_x=−My/Iは力[N]か、それとも表面力[Pa]か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>単位面積あたりの表面力[Pa]。</p>
+<p><strong>解説：</strong>N·m×m/m⁴=N/m²となる。境界線に沿う積分では面外厚さsを掛け、面積を作る。整合節点荷重はNの単位になる。</p>
+<p class="formula">f_e = ∫ Nᵀp s dΓ</p>
+</details></article>
+<article class="qa-item" id="l4-q05">
+<h3>L4-Q05</h3><p><strong>問い：</strong>右端表面力の合力が0なら、曲げモーメントも0か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>0とは限らず、この分布ではMが残る。</p>
+<p><strong>解説：</strong>上側の左向き力と下側の右向き力は相殺するが、モーメントの向きは同じになる。ΣFだけでなくΣ(r×F)も確認する。</p>
+<p class="formula">∫p_x s dy = 0； −∫y p_x s dy = M</p>
+</details></article>
+<article class="qa-item" id="l4-q06">
+<h3>L4-Q06</h3><p><strong>問い：</strong>T3からT6へ変え、境界節点が増えたら、各節点に同じ数値の力を与えてよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>よくない。同じ表面力分布を、各要素の境界形関数で積分する。</p>
+<p><strong>解説：</strong>単純な節点への等分配では合力・合モーメントや仮想仕事が変わる可能性がある。形状だけをそろえても、荷重の与え方が違えば要素の性能比較にならない。</p>
+</details></article>
+<article class="qa-item" id="l4-q07">
+<h3>L4-Q07</h3><p><strong>問い：</strong>8×2セルのQ4と、同じセルを2分したT3は、全体の自由度数も2倍違うか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>違わない。この格子では共有節点はともに27、左端拘束後は48自由度。</p>
+<p><strong>解説：</strong>Q4は16要素、T3は32要素だが、頂点の集合は同じ。左端3節点の各2自由度を拘束すると2×(27−3)=48。要素数と全体の未知数を区別する。</p>
+</details></article>
+<article class="qa-item" id="l4-q08">
+<h3>L4-Q08</h3><p><strong>問い：</strong>純曲げで二次要素のたわみが最初から一致したら、一般の荷重でも粗いメッシュで十分か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>一般化できない。</p>
+<p><strong>解説：</strong>今回は補間空間が参照変位を含む特別なケース。荷重分布・形状・物性・拘束が変われば、解は同じ次数の多項式とは限らない。曲率が変わるケースで収束も検証する。</p>
+</details></article>
+<article class="qa-item" id="l4-q09">
+<h3>L4-Q09</h3><p><strong>問い：</strong>参照値が0のτ_xyについて、通常の相対誤差を計算してよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>0で割るため使えない。非ゼロの応力尺度で正規化する。</p>
+<p><strong>解説：</strong>このケースでは最大絶対せん断応力を参照曲げ応力6 MPaで割って報告できる。合反力0も同様にM/Hなどの力の尺度を使う。正規化の方法と単位を記録する。</p>
+</details></article>
+<article class="qa-item" id="l4-q10">
+<h3>L4-Q10</h3><p><strong>問い：</strong>要素のゆがみだけを調べるとき、外周節点も動かして部品の外形を変えてよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>外形を変えると物理問題も変わるため、基準比較では内部節点だけを動かす。</p>
+<p><strong>解説：</strong>荷重境界や拘束位置を保持し、中間節点も決めた規約で配置する。T6/Q9では幾何写像への影響も含めて記録し、ヤコビアンと積分精度を確認する。</p>
+</details></article>
+<article class="qa-item" id="l4-q11">
+<h3>L4-Q11</h3><p><strong>問い：</strong>先端たわみが参照解に近ければ、応力・反力・エネルギーの照合を省略できるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>省略できない。</p>
+<p><strong>解説：</strong>一つの指標の偶然の一致や誤差の相殺があり得る。荷重の釣合い、拘束、応力の評価位置、エネルギー、残差も確認する。節点平均化した応力だけで、要素ごとの差を隠さない。</p>
+</details></article>
+<article class="qa-item" id="l4-q12">
+<h3>L4-Q12</h3><p><strong>問い：</strong>成立しないケースと、正常に解けたが誤差が許容値を超えるケースは同じ扱いにするか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>分ける。前者はerrorでランキング外、後者は精度不足として誤差を残す。</p>
+<p><strong>解説：</strong>品質・拘束・解の成立性を確認してから収束と精度を判定する。時間が短いことや数値が出たことだけで採用しない。M2bではこの状態と入力・メッシュ・ソルバー設定を一緒に保存する。</p>
+</details></article>
+</section>
+<!-- END GENERATED QA -->
+<footer><h2>出典と教材について</h2><p><a href="https://interactivetextbooks.citg.tudelft.nl/computational-modelling/continuum_linear/continuum_mechanics.html">TU Delft：平面応力と境界条件</a> · <a href="https://docs.software.vt.edu/abaqusv2025/English/SIMACAEBMKRefMap/simabmk-c-linbending.htm">Abaqus：曲げ性能の比較</a></p><p>寸法と荷重は独自の教育用設定。外部の数値結果を転載したものではありません。M2bのFEMソルバーは未実装です。</p><p><a href="03-fem.html">講義3</a> · <a href="04-fem-benchmark.md">講義4のMarkdown版</a></p><p class="note">2026-09-08 / AI支援教材 / GitHub公開済み・配布ライセンス未設定。テーマ以外の回答や学習履歴は保存・送信しません。</p></footer></main>
+<script>
+(() => {
+  const select = document.getElementById("theme");
+  const apply = value => {
+    if (value === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = value;
+  };
+  try {
+    const stored = localStorage.getItem("mech-benchmark-theme");
+    if (["system", "light", "dark"].includes(stored)) select.value = stored;
+  } catch (_) { /* Storage is optional. */ }
+  apply(select.value);
+  select.addEventListener("change", () => {
+    apply(select.value);
+    try { localStorage.setItem("mech-benchmark-theme", select.value); } catch (_) {}
+  });
+})();
+</script></body></html>

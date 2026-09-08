@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-labelledby="title desc">
+<title id="title">純曲げモデルと比較の手順</title>
+<desc id="desc">左端の変位を固定した長方形に、右端上側では左向き、下側では右向きの分布荷重を与える。合力はゼロでモーメントが残る。図は寸法と荷重分布を模式化している。</desc>
+<!-- Fixed light sheet for offline viewing, GitHub and print. -->
+<rect width="640" height="440" fill="#fafaf7"/>
+<g font-family="Segoe UI,Yu Gothic,sans-serif" fill="#182933" stroke="#182933" stroke-width="1.5">
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#165f86" stroke="none"/></marker></defs>
+<g stroke="none"><text x="28" y="34" font-size="22" font-weight="700">純曲げ：合力0、合モーメントM</text><text x="28" y="62" font-size="15">面内曲げの概念図。寸法・変形・矢印の長さは実尺ではない。</text></g>
+<rect x="105" y="106" width="320" height="94" fill="#e6f0f6"/>
+<path d="M105 97 V210 M93 103 L105 115 M93 126 L105 138 M93 149 L105 161 M93 172 L105 184 M93 195 L105 207" fill="none"/>
+<path d="M105 153 H425" stroke-dasharray="5 5"/>
+<g stroke="#165f86" marker-end="url(#arrow)"><path d="M468 112 H408"/><path d="M455 134 H425"/><path d="M425 172 H455"/><path d="M408 194 H468"/></g>
+<g stroke="none" font-size="16"><text x="484" y="118">上側：圧縮</text><text x="484" y="197">下側：引張</text><text x="108" y="91">u = v = 0</text><text x="224" y="144">中立軸 y = 0</text><text x="185" y="225">L = 100 mm</text><text x="28" y="152">H</text><text x="28" y="175">10 mm</text></g>
+<g stroke="#165f86" marker-end="url(#arrow)"><path d="M525 252 H583"/><path d="M525 252 V218"/></g>
+<g stroke="none" font-size="16"><text x="590" y="256">x</text><text x="512" y="215">y</text><text x="28" y="264">面外厚さ s = 1 mm　／　平面応力・ν = 0</text></g>
+<g stroke="#c6d1d6" fill="#fff"><rect x="28" y="300" width="172" height="103" rx="5"/><rect x="234" y="300" width="172" height="103" rx="5"/><rect x="440" y="300" width="172" height="103" rx="5"/></g>
+<g stroke="none" font-size="17"><text x="43" y="330" font-weight="700">1. 参照解</text><text x="43" y="358">変位・応力</text><text x="43" y="384">境界条件も照合</text><text x="249" y="330" font-weight="700">2. 近似を変更</text><text x="249" y="358">要素・分割</text><text x="249" y="384">同じ物理問題</text><text x="455" y="330" font-weight="700">3. 結果を検証</text><text x="455" y="358">誤差・自由度数</text><text x="455" y="384">異常は別に記録</text></g>
+<g stroke="#165f86" marker-end="url(#arrow)"><path d="M205 347 H227"/><path d="M411 347 H433"/></g>
+<g stroke="none" font-size="12"><text x="204" y="292">設定</text><text x="410" y="292">評価</text></g>
+</g></svg>
