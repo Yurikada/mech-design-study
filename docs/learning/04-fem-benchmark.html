@@ -20,6 +20,9 @@
 <p>2D連続体節点には回転自由度がありません。各要素の境界形関数Nを使い、分布から整合節点荷重を求めます。</p>
 <p class="formula">f_e＝∫ Nᵀp s dΓ　（Pa × m × m＝N）</p>
 <p>節点が増えても、各節点へ同じ数値の力を配るのではなく、同じ表面力を積分します。</p>
+<h3>合力・モーメントの一致は必要条件</h3><p>それだけでは配分の正しさを保証できません。補間で表せるすべての仮想変位について、分布荷重と節点荷重の外力仮想仕事を一致させます。</p>
+<p class="formula">δqᵀf_e＝∫(Nδq)ᵀp s dΓ＝δqᵀ∫Nᵀp s dΓ</p>
+<p>直線の3節点二次境界に、垂直方向の一様荷重を与える別の例では、端・中央・端への整合配分は[P/6, 2P/3, P/6]。等分配[P/3, P/3, P/3]も合力と中央まわりのモーメントは同じですが、中央だけが荷重方向へ仮想変位dすると、仕事はそれぞれ2Pd/3とPd/3で異なります。</p><p><a href="https://www.lusas.com/user_area/theory/equivalent_force_distribution.html">LUSAS：等価節点荷重の導出</a></p>
 <h3>参照変位が拘束も満たすことを確認する</h3><p class="formula">κ＝M/(EI)、u＝−κxy、v＝κx²/2</p><p class="formula">σ_x＝−My/I、σ_y＝τ_xy＝0</p>
 <p>ν＝0なら材料則と釣合いを満たし、左端ではu＝v＝0です。右端の応力も指定の表面力に一致します。</p>
 <div class="table-wrap"><table><caption>解析式による参照値。FEMの計算結果ではありません。</caption><thead><tr><th>照合量</th><th>値</th></tr></thead><tbody>
@@ -112,6 +115,39 @@
 <details><summary>解答例と解説</summary>
 <p><strong>解答例：</strong>分ける。前者はerrorでランキング外、後者は精度不足として誤差を残す。</p>
 <p><strong>解説：</strong>品質・拘束・解の成立性を確認してから収束と精度を判定する。時間が短いことや数値が出たことだけで採用しない。M2bではこの状態と入力・メッシュ・ソルバー設定を一緒に保存する。</p>
+</details></article>
+<article class="qa-item" id="l4-q13">
+<h3>L4-Q13</h3><p><strong>問い：</strong>参照変位を正解として使うには、材料則や釣合いに加えて何を満たす必要があるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>指定した変位の拘束条件と、指定した荷重境界条件。</p>
+<p><strong>解説：</strong>今回のν=0の参照場はx=0でu=v=0となり、右端で応力から得る表面力もp_x=−My/Iに一致する。式だけを借りて、異なる支持や荷重に適用しない。</p>
+</details></article>
+<article class="qa-item" id="l4-q14">
+<h3>L4-Q14</h3><p><strong>問い：</strong>ν&gt;0の線形弾性材料をx方向に圧縮すると、横方向が自由な場合のy方向の変形はどうなるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>y方向に広がる。</p>
+<p><strong>解説：</strong>横方向の応力が0ならε_y=−νε_x。圧縮ε_x&lt;0に対しε_y&gt;0となる。横方向を拘束した場合は、この自由な伸びが抑えられ、横方向応力が生じるため条件を区別する。</p>
+</details></article>
+<article class="qa-item" id="l4-q15">
+<h3>L4-Q15</h3><p><strong>問い：</strong>ν&gt;0、κ≠0の純曲げでv=κ(x²+νy²)/2とすると、根元全体のv=0を満たすか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>満たさない。x=0でもv=νκy²/2が残る。</p>
+<p><strong>解説：</strong>さらにy=0を代入すれば0になるが、それは根元中央の1点だけ。根元全体の拘束確認にはならない。今回ν=0を採るのは、単純な純曲げ参照場と根元全体の完全固定を両立させるため。</p>
+</details></article>
+<article class="qa-item" id="l4-q16">
+<h3>L4-Q16</h3><p><strong>問い：</strong>変換後の合力と合モーメントが一致していれば、節点荷重の配分方法は何でもよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>よくない。一致は必要条件であって十分条件ではない。</p>
+<p><strong>解説：</strong>合力と合モーメントの照合だけでは、変形する仮想変位に対する仕事の一致を保証しない。要素の補間で表せるすべての仮想変位について、分布荷重と節点荷重の外力仮想仕事を一致させると、整合節点荷重f_e=∫Nᵀp s dΓが得られる。</p>
+<p class="formula">δqᵀ f_e = ∫ (Nδq)ᵀ p s dΓ</p>
+<p><a href="https://www.lusas.com/user_area/theory/equivalent_force_distribution.html">出典・照合先</a></p>
+</details></article>
+<article class="qa-item" id="l4-q17">
+<h3>L4-Q17</h3><p><strong>問い：</strong>直線の3節点二次境界に一様荷重を与える例で、合力Pを端・中央・端へ[P/3,P/3,P/3]と[P/6,2P/3,P/6]で配る。中央だけを荷重方向へ仮想変位dさせたときの仕事は同じか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>異なる。等分配ではPd/3、整合配分では2Pd/3となる。</p>
+<p><strong>解説：</strong>節点は等間隔、荷重は境界に垂直な同一方向とする。両配分は合力Pと中央まわりのモーメント0を満たすが、二次の仮想変形に対する仕事が違う。一様分布荷重の仕事と一致する配分は1:4:1である。これは説明用の一様荷重であり、本文の純曲げの線形荷重p_x=−My/Iとは別の例。</p>
+<p><a href="https://www.lusas.com/user_area/theory/equivalent_force_distribution.html">出典・照合先</a></p>
 </details></article>
 </section>
 <!-- END GENERATED QA -->
