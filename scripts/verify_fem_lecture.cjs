@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const assert = require("node:assert/strict");
+const checkReview = require("./qa_review.cjs");
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "outputs", "fem-lecture-qa");
 fs.mkdirSync(output, { recursive: true });
@@ -18,6 +19,7 @@ fs.mkdirSync(output, { recursive: true });
   const measurements = [];
   try {
     await page.goto(pathToFileURL(path.join(root, "docs/learning/03-fem.html")).href);
+    await checkReview(page, "03-fem");
     const links = await page.locator("a[href]").evaluateAll(elements => elements.map(e => e.getAttribute("href")));
     for (const link of links) {
       if (link.startsWith("#")) assert.equal(await page.locator(link).count(), 1);
@@ -59,6 +61,7 @@ fs.mkdirSync(output, { recursive: true });
     await page.setViewportSize({ width: 320, height: 900 });
     await page.locator("#theme").selectOption("dark");
     await page.locator("#choices").screenshot({ path: path.join(output, "mobile-dark.png") });
+    await page.locator("#l3-q23").screenshot({ path: path.join(output, "q4-qa-mobile-dark.png") });
     await page.goto(pathToFileURL(path.join(root, "docs/learning/assets/fem-mesh-and-order.svg")).href);
     const clipped = await page.evaluate(() => {
       const view = document.documentElement.viewBox.baseVal;

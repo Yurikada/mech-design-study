@@ -23,7 +23,7 @@
     <p>倍率を予想する力から、モデルの適用範囲とソフトウェアの仕組みを説明する力へ。図を読み、寸法を変え、最後に自分の説明と実行結果で確認します。</p>
     <p class="note">学習用の解析解モデルです。実機の妥当性・寿命・EMC適合は未検証。図と資料はAI支援で作成しています。</p>
   </div>
-  <nav aria-label="講義の目次"><a href="#conditions">1. 前提と単位</a><a href="#equations">2. 四つの式</a><a href="#validity">3. 実機との違い</a><a href="#experiment">4. 寸法を変える</a><a href="#integration">5. 評価をつなぐ</a><a href="#questions">6. 理解を確認</a></nav>
+  <nav aria-label="講義の目次"><a href="#conditions">1. 前提と単位</a><a href="#equations">2. 四つの式</a><a href="#validity">3. 実機との違い</a><a href="#experiment">4. 寸法を変える</a><a href="#integration">5. 評価をつなぐ</a><a href="#questions">6. 理解を確認</a><a href="#review-qa">一問一答と解説</a></nav>
 
   <section id="conditions">
     <p class="chapter">01 / 境界条件</p><h2>同じ形でも、条件が変わると式が変わる</h2>
@@ -93,6 +93,116 @@
     <ol class="questions"><li><h3>Q1：入力・単位・境界条件</h3><p>4つの指標について、式・入力・出力単位・成立条件を説明してください。先端にセンサー質量を付けた場合と、根元まで断熱にした場合、現在の式で何が不足しますか。</p></li><li><h3>Q2：実物と違ったら</h3><p>テスト成功、計算約247 Hz、実物約190 Hzだったとします。バグと断定できますか。調べる要因を2つ、確認方法を1つ挙げてください。190 Hzは問題用の架空値です。</p></li><li><h3>Q3：比較を再現する</h3><p>CLIで3 mmと2 mmを実行し、2 mmのたわみ・周波数・閾値、採用を妨げる制約、3 mmでも全体合格にできない理由を報告してください。</p></li><li><h3>Q4：新しい評価をつなぐ</h3><p>疲労データと荷重履歴がない場合、どの状態を返しますか。入力・計算・判定をどのファイルへ追加するかも説明してください。</p></li></ol>
     <p class="note">この教材は回答や個人の学習履歴を保存・送信しません。表示テーマだけをこのブラウザに保存します。</p>
   </section>
-  <footer><h2>出典と教材について</h2><p>図は本プロジェクトで作成した概念図。外部図版や写真は転載していません。物性・設計閾値は学習用の仮定です。</p><p><a href="https://ocw.mit.edu/courses/16-20-structural-mechanics-fall-2002/pages/calendar/">MIT：構造力学</a> · <a href="https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/pages/readings/">MIT：熱伝達</a> · <a href="01-lecture.md#出典と再現">詳細な出典と再現方法</a></p><p><a href="01-lecture.md">図付きMarkdown版</a> · <a href="01-heated-cantilever.md">実習ガイド</a> · <a href="../architecture.md">統合アーキテクチャ</a></p><p class="note">2026-09-07 / AI支援教材 / 公開範囲・配布ライセンスは別途決定</p></footer>
+  <!-- BEGIN GENERATED QA -->
+<section id="review-qa" class="review-qa">
+<h2>一問一答と解説</h2>
+<p>各問でいったん考え、解答例と解説を開いて確認する。対話で扱った論点を汎用の教材として再構成したもので、個人の回答・成績・実行記録ではない。解答例を読んだことと、自分で説明・実行できたことは別に確認する。</p>
+<figure><img src="assets/evaluation-flow.svg" alt="入力確認、物理計算、制約判定、表示を分ける評価の流れ"></figure>
+<article class="qa-item" id="l1-q01">
+<h3>L1-Q01</h3><p><strong>問い：</strong>厚みtを2倍にすると、質量・曲げ応力・たわみ・一次固有振動数・温度上昇はどう変わるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>順に2倍、1/4倍、1/8倍、2倍、1/2倍。</p>
+<p><strong>解説：</strong>長さ・幅・材料・先端力・入熱を固定する。I=bt³/12より応力はt⁻²、たわみはt⁻³、付加質量なしの一様梁の周波数はtに比例する。温度上昇は根元温度固定・側面断熱の1D伝導モデルでの倍率で、放射冷却にはそのまま使えない。</p>
+</details></article>
+<article class="qa-item" id="l1-q02">
+<h3>L1-Q02</h3><p><strong>問い：</strong>幅bを2倍にすると、同じ5指標はどう変わるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>順に2倍、1/2倍、1/2倍、1倍、1/2倍。</p>
+<p><strong>解説：</strong>厚みなどを固定する。周波数の式では曲げ剛性EIと単位長さ質量ρAがともに2倍になり、比が変わらない。先端付加質量があるモデルでは、この相殺を無条件に使えない。</p>
+</details></article>
+<article class="qa-item" id="l1-q03">
+<h3>L1-Q03</h3><p><strong>問い：</strong>幅と厚みのどちらを増すと、現在のモデルで周波数を上げられるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>厚みを増す。</p>
+<p><strong>解説：</strong>ただし周波数だけで決めない。重量、寸法、熱の処理、製作や組立などの制約と同時に評価する。現在の計算で未評価の分野は、合格したものとして扱わない。</p>
+</details></article>
+<article class="qa-item" id="l1-q04">
+<h3>L1-Q04</h3><p><strong>問い：</strong>曲げ応力σ=6FL/(bt²)の単位は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>Pa。</p>
+<p><strong>解説：</strong>分子は力×長さ、分母は長さの3乗なので、N·m/m³=N/m²=Paとなる。Nとkg、mmとmを入力で混在させない。</p>
+<p class="formula">[σ] = [N·m]/[m³] = [N/m²] = [Pa]</p>
+</details></article>
+<article class="qa-item" id="l1-q05">
+<h3>L1-Q05</h3><p><strong>問い：</strong>熱抵抗L/(kA)と、温度上昇QL/(kA)の単位は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>熱抵抗はK/W、温度上昇はK。</p>
+<p><strong>解説：</strong>kの単位はW/(m·K)、Aはm²。ここでQは熱量[J]ではなく熱流率・発熱電力[W]を表す。温度差はKと℃で同じ数値だが、放射式の温度には絶対温度を使う。</p>
+<p class="formula">[L/(kA)] = m / ((W/(m·K))·m²) = K/W； [Q·L/(kA)] = K</p>
+</details></article>
+<article class="qa-item" id="l1-q06">
+<h3>L1-Q06</h3><p><strong>問い：</strong>たわみFL³/(3EI)の単位は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>m。</p>
+<p><strong>解説：</strong>EはPa=N/m²、断面二次モーメントIはm⁴なのでEIはN·m²。したがってN·m³/(N·m²)=m。係数3は無次元。</p>
+<p class="formula">[EI] = kg·m³/s²； [FL³/(EI)] = m</p>
+</details></article>
+<article class="qa-item" id="l1-q07">
+<h3>L1-Q07</h3><p><strong>問い：</strong>f₁=β₁²√(EI/(ρA))/(2πL²)の単位は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>s⁻¹、すなわちHz。</p>
+<p><strong>解説：</strong>ρAはkg/m、EI/(ρA)はm⁴/s²。平方根を取るとm²/sで、L²で割ると1/sになる。β₁と2πは無次元で、角振動数ωと周波数fを区別する。</p>
+<p class="formula">[EI/(ρA)] = m⁴/s²； [f₁] = (1/m²)·(m²/s) = Hz</p>
+</details></article>
+<article class="qa-item" id="l1-q08">
+<h3>L1-Q08</h3><p><strong>問い：</strong>先端にセンサ質量を取り付けたとき、現在の固有振動数式をそのまま使えるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>付加質量の影響を評価するには、そのままでは不足する。</p>
+<p><strong>解説：</strong>現在の解析式とM2aの梁FEMは梁自身の分布質量を扱い、先端質量は含まない。静的先端力Fを入力したことは、動的質量を追加したことにはならない。拡張では先端変位自由度の質量などを加え、取り付け剛性やセンサの回転慣性が必要かも検討する。</p>
+</details></article>
+<article class="qa-item" id="l1-q09">
+<h3>L1-Q09</h3><p><strong>問い：</strong>根元への伝導を断ち、真空中で低温の周囲へ熱を逃がす場合、必要な式は何か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>熱放射による正味の熱移動を熱収支に加える。</p>
+<p><strong>解説：</strong>一様温度の灰色面が大きな等温黒体囲いを見ている近似では、下式を使える。εは放射率、σ_SBはStefan–Boltzmann定数、A_radは放射面積。伝導断熱だけで放射が支配的とは断定できず、空気があれば対流も調べる。周囲との形態係数や相互反射が効く場合は拡張が必要。現行CLIには未実装。</p>
+<p class="formula">Q_rad = εσ_SB A_rad(T⁴ − T_sur⁴)； T、T_surはK</p>
+<p><a href="https://www.nasa.gov/smallsat-institute/sst-soa/thermal-control/">出典・照合先</a></p>
+</details></article>
+<article class="qa-item" id="l1-q10">
+<h3>L1-Q10</h3><p><strong>問い：</strong>温度が上がる速さを考えるには、定常熱抵抗に加えて何が必要か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>熱容量C。</p>
+<p><strong>解説：</strong>温度を一様とみなす集中定数モデルではC=mc_p [J/K]を使う。Cが大きいほど、同じ正味入熱に対する温度変化は遅い。内部温度差が大きい場合は、分布した熱伝導の過渡解析が必要。現行CLIの定常式は時間変化を計算しない。</p>
+<p class="formula">C dT/dt = Q_in − Q_cond − Q_conv − Q_rad</p>
+</details></article>
+<article class="qa-item" id="l1-q11">
+<h3>L1-Q11</h3><p><strong>問い：</strong>伝導・対流・正味放射のすべてで外へ熱が逃げず、正の発熱が続く場合、定常温度はあるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>このモデルでは有限の定常温度はなく、温度が上がり続ける。</p>
+<p><strong>解説：</strong>定常に必要な入熱と放熱の釣合いを満たせない。CとQ_inが一定ならT=T₀+(Q_in/C)t。実物では物性変化や相変化などで単純モデルの適用限界に達する。部品と囲いの間の放射は、完全断熱な系全体からの放熱とは別である。</p>
+</details></article>
+<article class="qa-item" id="l1-q12">
+<h3>L1-Q12</h3><p><strong>問い：</strong>計算約247 Hz、実測約190 Hzだったとする。バグ以外に何を調べるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>センサ取り付けによる質量負荷と、実物の固定条件の違いなど。</p>
+<p><strong>解説：</strong>この実測値は説明用の仮想値。センサの影響には既知の追加質量を変える比較、固定条件には締結数・締付けや接合部の変更が考えられる。変更が質量と剛性の両方に影響する点を記録し、可能なら非接触測定などで切り分ける。測定誤差と測定対象そのものの変化を区別する。</p>
+</details></article>
+<article class="qa-item" id="l1-q13">
+<h3>L1-Q13</h3><p><strong>問い：</strong>たわみ0.000238095 m≤0.0001 m、周波数164.504 Hz≥200 Hzという条件は合格か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>どちらも不合格。</p>
+<p><strong>解説：</strong>たわみは上限を超え、周波数は下限に届かない。表示丸め前の余裕は約−0.000138095 mと−35.4956 Hz。単位の異なる余裕をそのまま足さず、各制約を判定する。</p>
+</details></article>
+<article class="qa-item" id="l1-q14">
+<h3>L1-Q14</h3><p><strong>問い：</strong>板厚3 mmで評価済みの4指標が合格なら、設計全体を合格としてよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>よくない。疲労など9分野が未評価なので、総合はincomplete。</p>
+<p><strong>解説：</strong>passはその指標と条件に限る。未評価を含む通常CLIの終了コード0も、製品承認や全12分野の妥当性確認を意味しない。</p>
+</details></article>
+<article class="qa-item" id="l1-q15">
+<h3>L1-Q15</h3><p><strong>問い：</strong>疲労データや荷重履歴が不足している場合、損傷ゼロを返してよいか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>よくない。not_evaluatedと、欠けている情報を返す。</p>
+<p><strong>解説：</strong>未評価を無損傷と扱うと、繰り返し荷重による疲労破壊を見落とす。評価した結果のfail、データ不足のnot_evaluated、計算異常のerrorを分ける。</p>
+</details></article>
+<article class="qa-item" id="l1-q16">
+<h3>L1-Q16</h3><p><strong>問い：</strong>疲労評価を追加する場合、入力・計算・判定には何が必要か。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>形状・物性・荷重履歴を入力し、応力／ひずみと寿命・損傷を計算して、位置ごとに判定する。</p>
+<p><strong>解説：</strong>入力には繰り返し回数、平均応力、環境条件、モデルに対応する材料試験データも必要。S-N/Basquin、ε-N/Coffin–Manson、累積損傷やエネルギー法は適用範囲の異なる選択肢で、必ず全部を重ねるものではない。NG箇所の表示には位置IDと局所結果を保持する。必要情報がない位置は未評価として残す。</p>
+</details></article>
+</section>
+<!-- END GENERATED QA -->
+<footer><h2>出典と教材について</h2><p>図は本プロジェクトで作成した概念図。外部図版や写真は転載していません。物性・設計閾値は学習用の仮定です。</p><p><a href="https://ocw.mit.edu/courses/16-20-structural-mechanics-fall-2002/pages/calendar/">MIT：構造力学</a> · <a href="https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/pages/readings/">MIT：熱伝達</a> · <a href="01-lecture.md#出典と再現">詳細な出典と再現方法</a></p><p><a href="01-lecture.md">図付きMarkdown版</a> · <a href="01-heated-cantilever.md">実習ガイド</a> · <a href="../architecture.md">統合アーキテクチャ</a></p><p class="note">2026-09-07 / AI支援教材 / 公開範囲・配布ライセンスは別途決定</p></footer>
 </main>
 </body></html>

@@ -71,6 +71,11 @@ pre { white-space:pre-wrap; overflow-wrap:anywhere; border:1px solid var(--line)
 code { font-family:Consolas,"Courier New",monospace; font-size:0.92em; }
 .questions { padding-left:1.5em; }
 .questions li { padding-bottom:20px; }
+.review-qa .qa-item { margin-top:28px; padding-top:24px; border-top:1px solid var(--line); }
+.review-qa details { background:var(--surface); border:1px solid var(--line); padding:12px 16px; border-radius:6px; }
+.review-qa summary { cursor:pointer; font-weight:700; min-height:44px; display:list-item; }
+.review-qa details[open] summary { margin-bottom:12px; }
+.review-qa details p:last-child { margin-bottom:0; }
 footer { padding-top:40px; }
 @media(max-width:850px) { .two-column,.formula-grid { grid-template-columns:1fr; } .two-column { gap:24px; } figure img,figure svg { margin:auto; } }
 @media(max-width:560px) { main { padding:20px 12px 40px; } .masthead-inner { padding:12px; gap:8px; } .controls { grid-template-columns:1fr; padding:16px; gap:12px; } .ratio-row { grid-template-columns:1fr 62px; gap:8px; } .ratio-row .ratio-label { grid-column:1/-1; } .axis { margin-left:0; margin-right:70px; } th,td { padding:10px 6px; font-size:14px; } #results { min-width:550px; } .lead { font-size:19px; } .callout { padding:12px; } }

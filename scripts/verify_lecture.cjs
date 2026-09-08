@@ -6,6 +6,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const assert = require("node:assert/strict");
+const checkReview = require("./qa_review.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "outputs", "lecture-qa");
@@ -29,6 +30,7 @@ const fields = [
   const measurements = [];
   try {
     await page.goto(url);
+    await checkReview(page, "01-lecture");
     for (const [key, scenario] of Object.entries(data.scenarios)) {
       const [width, thickness] = key.split(":");
       await page.locator("#width").fill(width);
@@ -83,6 +85,7 @@ const fields = [
     await page.locator("#theme").selectOption("dark");
     await page.locator("#conditions").screenshot({ path: path.join(output, "conditions-mobile-dark.png") });
     await page.locator("#experiment").screenshot({ path: path.join(output, "comparison-mobile-dark.png") });
+    await page.locator("#l1-q09").screenshot({ path: path.join(output, "radiation-qa-mobile-dark.png") });
 
     const svgMeasurements = [];
     for (const name of ["cantilever", "heat-path", "evaluation-flow", "verification-validation"]) {

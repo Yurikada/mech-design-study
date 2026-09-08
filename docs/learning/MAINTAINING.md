@@ -16,7 +16,15 @@ GitHubのファイル画面ではHTMLはソース表示になる。clone／ダ�
 
 表示テーマだけをlocalStorageに保存する。回答・個人の学習履歴は保存も送信もしない。
 
-## 数値と比較表
+## 一問一答の更新
+
+講義1〜3の一問一答は `assets/lecture-qa.json` を正本とする。問い・解答例・解説・式・照合先を更新し、`python scripts/build_lecture_qa.py` で各Markdownと既存HTMLの生成マーカー内へ反映する。`--check` で両版の整合を検査する。講義2はMarkdown版のみ。個人の発言や採点履歴ではなく、対話で扱った論点を汎用の問題として記す。
+
+各問の解答と解説は標準のdetails要素で開閉でき、JavaScriptなしでも閲覧できる。GitHubではMarkdownのプレビューで開く。追記後は解答をすべて開いた状態でも、モバイルと各テーマで横にはみ出さないことを確認する。
+
+既存の `verify_lecture.cjs` と `verify_fem_lecture.cjs` は、共通の `qa_review.cjs` で正本との本文照合・キーボード開閉を確認し、すべての解説を開いて表示監査する。
+
+## 数値と比較表の再生成
 
 Pythonのモデルを正として36ケースを生成する。ブラウザはその値を表示・単位換算する。別実装の物理ソルバーをJavaScriptに持たせない。
 
