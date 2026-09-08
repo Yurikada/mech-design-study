@@ -14,7 +14,7 @@ before substantive changes.
 - Run pytest, Ruff check, Ruff format --check, and pip check before committing code.
 - Do not introduce heavy solvers, external services, or automatic design decisions
   until the associated learning case and validation approach are specified.
-- GitHub starts private. Public release and license choice remain user decisions.
+- The user made GitHub public on 2026-09-08. License choice remains a user decision.
 
 ## KnowledgeBase bridge on the owner's PC
 
