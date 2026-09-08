@@ -1,5 +1,9 @@
 # mech-design-study
 
+**入口:** [図付きの導入講義](docs/learning/01-lecture.md) · [設計案比較](docs/learning/02-design-comparison.md) · [梁FEMの検証](docs/learning/03-fem.md)
+
+現在はM0の解析解、M1の比較CLI、M2aの梁FEMまで実装しています。2次元要素比較・熱FEM・疲労・EMCなどは [ロードマップ](docs/roadmap.md) の今後の対象です。
+
 機械・電気・信頼性に関わる**個別の設計技術**と、評価結果をつないで判断する**統合の仕組み**を、実装と検証を通じて学ぶスタディケース。
 
 初期版は「加熱される片持ち支持板」。共通の寸法・材料入力から、応力・たわみ・一次固有振動数・定常温度を計算し、制約の余裕を表示する。ケースの全12分野のうち評価済みは3分野。残りは `not_evaluated` で、総合結果は `incomplete` となる。
@@ -16,7 +20,7 @@
 
 ## Windowsセットアップ
 
-Python 3.12以上が必要（このPCの基準はPython 3.13）。リポジトリ直下のPowerShellで実行する。WindowsAppsのPythonエイリアスが不調な場合は実在するPythonを指定する。
+Python 3.12以上が必要（CIではPython 3.12 / 3.13を使用）。リポジトリ直下のPowerShellで実行する。WindowsAppsのPythonエイリアスが不調な場合は実在するPythonを指定する。
 
 ```powershell
 & .\scripts\setup.ps1 -PythonExe "$env:USERPROFILE\miniconda3\python.exe"
