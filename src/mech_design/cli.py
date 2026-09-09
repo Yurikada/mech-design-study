@@ -9,6 +9,10 @@ from mech_design.evaluation import evaluate
 
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "mms":
+        from mech_design.mms_cli import main as mms_main
+
+        return mms_main(argv[1:])
     if argv and argv[0] == "plane":
         from mech_design.plane_cli import main as plane_main
 

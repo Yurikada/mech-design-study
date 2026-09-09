@@ -28,7 +28,9 @@ GitHubのファイル画面ではHTMLはソース表示になる。clone／ダ�
 
 講義4は `04-fem-benchmark.md` / `.html`、概念図 `assets/pure-bending-study.svg` と実測図 `assets/plane-convergence.svg`。`node scripts/verify_fem_lecture.cjs 04-fem-benchmark` で18表示条件・Q&A・リンク・SVGを確認する。検査結果は `outputs/benchmark-lecture-qa`。解析式の参照値と、第6節のM2b計算結果を区別する。
 
-講義5は `05-mesh-convergence.md` / `.html` と概念図 `assets/variable-curvature-study.svg`。`node scripts/verify_fem_lecture.cjs 05-mesh-convergence` で同じ18表示条件を確認し、結果を `outputs/convergence-lecture-qa` へ保存する。数値は製造解法の参照値であり、新しい体積力ケースのFEM結果ではない。
+講義5は `05-mesh-convergence.md` / `.html` と概念図 `assets/variable-curvature-study.svg`。`node scripts/verify_fem_lecture.cjs 05-mesh-convergence` で同じ18表示条件を確認し、結果を `outputs/convergence-lecture-qa` へ保存する。参照値と実装結果の節を分ける。
+
+講義5の結果は `mms cases/plane_mms.toml --output outputs/new-mms.json` で新規計算し、確認後に `assets/mms-results.json` へ反映する。表は `python scripts/build_mms_results.py`（CIは `--check`）で両版へ同期する。図は `python scripts/plot_mms_results.py docs/learning/assets/mms-results.json docs/learning/assets` で再生成する（Matplotlib 3.10.7）。両対数軸・左右の縦軸範囲の違いを明示する。観測次数を一般的な保証としない。精度の閾値未設定と、計算成立・釣合い診断の通過を区別する。
 
 M2bの実測JSONは `assets/plane-results.json`。`plane cases/plane_bending.toml --output outputs/new-plane.json` で新規計算し、数値と入力・品質を確認してから教材へ反映する。図は `python scripts/plot_plane_results.py docs/learning/assets/plane-results.json docs/learning/assets` で再生成する（Matplotlib 3.10.7）。本文の結果表も新しいJSONと同期する。左右で縦軸尺度が異なること、時間の測定範囲、丸め誤差域の順位を一般化しないことを維持する。独立レビューの状態は完了確認後に更新する。
 

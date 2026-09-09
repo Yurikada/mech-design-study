@@ -109,6 +109,18 @@ T3/T6/Q4/Q9、分割数、内部節点のゆがみ、積分法を比較する。
 
 各行はpass/fail/error。終了0は全行の計算成立かつ1行以上の検証合格、1は入力・出力・計算エラー、2は全行の精度不足。診断ケースは1が期待値。全行合格や製品承認ではない。別モデルのCodexでレビューを実施し、版番号の入力検証不備を修正した。
 
+## 変曲率の製造解でメッシュ収束を調べる
+
+```powershell
+.\run.cmd mms cases\plane_mms.toml
+.\run.cmd mms cases\plane_mms.toml --output outputs\my-mms.json
+.\run.cmd mms --replay outputs\my-mms.json
+```
+
+講義5の体積力ケースをT3/T6/Q4/Q9、3段階の分割で計算する。変位場のL2誤差、ひずみ場のエネルギーノルム誤差、観測収束次数、メッシュ・荷重・変位と計算の来歴を保存する。純曲げの `plane` と別モデルで、旧保存結果の意味は変えない。ν=0・最大300節点。結果と積分則は[講義5](docs/learning/05-mesh-convergence.md)を参照。
+
+各行の `computed` は計算成立と釣合い診断の通過で、精度合格ではない。精度許容値と漸近収束の自動合否は未設定のため `not_evaluated`。終了0＝全行計算成立・釣合い診断通過、1＝入力・出力・計算エラー、2＝釣合い診断の許容外。保存ファイルは新規作成のみ、再計算は同じモデル・コード・NumPy/SciPy版が必要。
+
 ## 開発と検証
 
 ```powershell
@@ -141,7 +153,7 @@ docs/                     学習課題、拡張計画、設計判断、出典
 - [講義2：制約を満たす設計案を比較する](docs/learning/02-design-comparison.md)
 - [講義3：メッシュ・要素形状・次数を選ぶ](docs/learning/03-fem.md) / [ブラウザ版](docs/learning/03-fem.html)
 - [講義4：FEMの比較実験を設計する](docs/learning/04-fem-benchmark.md) / [ブラウザ版](docs/learning/04-fem-benchmark.html)
-- [講義5：曲率が変わる問題でメッシュ収束を確かめる](docs/learning/05-mesh-convergence.md) / [ブラウザ版](docs/learning/05-mesh-convergence.html)。体積力ケースの定式化と実装仕様。新荷重ケースは未実装。
+- [講義5：曲率が変わる問題でメッシュ収束を確かめる](docs/learning/05-mesh-convergence.md) / [ブラウザ版](docs/learning/05-mesh-convergence.html)。体積力の定式化、12条件の場の誤差と観測収束次数。
 - [講義の閲覧・更新・公開準備](docs/learning/MAINTAINING.md)
 - [12分野と統合技術の学習ロードマップ](docs/roadmap.md)
 - [第一ケースの式・前提・課題](docs/learning/01-heated-cantilever.md)

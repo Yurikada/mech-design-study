@@ -8,9 +8,9 @@
 <header class="masthead"><div class="masthead-inner"><a href="05-mesh-convergence.md">mech-design-study / 講義5</a><label class="theme-control">表示<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></div></header>
 <main id="main"><div class="intro"><p class="eyebrow">MECHANICAL DESIGN STUDY · LESSON 05</p><h1>曲率が変わる問題で<br>メッシュ収束を確かめる</h1>
 <p class="lead">今度は、二次要素でも厳密には表せない変位場へ。細分化で誤差が減るかを調べます。</p>
-<p class="note">次の数値実験の定式化・実装仕様です。参照式を検証済みですが、新しい体積力ケースのFEM計算は未実装です。</p>
+<p class="note">体積力ケースをmmsコマンドに実装しました。12条件の場の誤差と観測収束次数を、下の実装結果で確認できます。</p>
 <p>確認は節目でまとめて行います。既に説明できた内容の反復は省き、末尾の一問一答は必要なときの復習に使います。</p></div>
-<nav aria-label="講義の目次"><a href="#energy">1. 前節の結び</a><a href="#model">2. 新しい参照解</a><a href="#load">3. 荷重と境界</a><a href="#errors">4. 誤差と収束</a><a href="#implementation">5. 実装条件</a><a href="#review-qa">一問一答と解説</a></nav>
+<nav aria-label="講義の目次"><a href="#energy">1. 前節の結び</a><a href="#model">2. 新しい参照解</a><a href="#load">3. 荷重と境界</a><a href="#errors">4. 誤差と収束</a><a href="#implementation">5. 実装条件</a><a href="#mms-results">6. 実装結果</a><a href="#review-qa">一問一答と解説</a></nav>
 <section id="energy"><h2>余分なせん断エネルギーが、曲げ応答を硬くする</h2>
 <p>Q4の参照節点変位の補間ではγ_xy,h=κ(ℓ/2−x)。中央で0でも、二乗した値の積分は正になります。</p>
 <p class="formula">U_s = ½∫ Gγ_xy,h² s dΩ = GsHκ²ℓ³/24 &gt; 0</p>
@@ -35,7 +35,27 @@
 <p>同じ要素・積分法・外形でnx,nyをともに2倍にし、複数段階で比較します。誤差0や丸め誤差域にはこの式を使わず、1組だけで漸近収束を断定しません。</p></section>
 <section id="implementation"><h2>実装へ渡す条件</h2>
 <ol><li>純曲げと体積力ケースを区別し、古い保存入力の意味を変えない。</li><li>体積力からf_e=∫Nᵀb s dΩを計算し、釣合いと仮想仕事を照合する。</li><li>荷重・誤差評価の積分則を剛性とは別に選ぶ。アフィンT6ではNᵀbが全次数3なので、全次数2まで厳密な三角形3点則では一般に不足する。</li><li>反力・残差・参照値に加え、e_u・e_Eを複数の分割で保存する。</li><li>実行結果の1表で荷重の整合・場の誤差・収束・未評価の範囲をまとめて確認する。</li></ol>
-<p class="callout">この体積力ケースはまだCLIに追加していません。ここで確定した参照解と受入条件を、次の実装の基準にします。</p></section>
+<p class="callout">新しいmmsコマンドで実装しました。既存のplaneコマンドと保存結果は純曲げの意味を保ち、モデル版が異なる保存データの再生は拒否します。</p></section>
+<section id="mms-results"><h2>実装結果：細分化で場の誤差が減った</h2>
+<pre><code>.\run.cmd mms cases\plane_mms.toml
+.\run.cmd mms cases\plane_mms.toml --output outputs\my-mms.json
+.\run.cmd mms --replay outputs\my-mms.json</code></pre>
+<p>出力は新規ファイルのみ。同じコードとNumPy/SciPy版で、保存入力から再計算します。<a href="../../cases/plane_mms.toml">入力TOML</a> · <a href="assets/mms-results.json">保存結果JSON</a></p>
+<figure><img src="assets/mms-convergence.svg" alt="T3・Q4・T6・Q9の変位L2誤差とひずみエネルギーノルム誤差。nxとnyを同時に2倍にすると、今回の全要素で誤差が減少した。両対数軸。"><figcaption>横軸nx、ny=nx/4も同時に増やす。両対数軸で、左右の縦軸範囲は異なる。線は計算点を結ぶ。</figcaption></figure>
+<p>全条件でν=0、規則メッシュ、剛性は通常の完全積分。荷重と誤差は5×5 Gauss積分（三角形はDuffy変換）。ノルムの分母は矩形全体の解析積分を用いました。</p>
+<!-- BEGIN MMS RESULTS -->
+<div class="table-wrap"><table><caption>12条件の場の誤差と先端誤差</caption><thead><tr><th>要素</th><th>nx × ny</th><th>自由DOF</th><th>e_u [%]</th><th>e_E [%]</th><th>先端誤差 [%]</th></tr></thead><tbody><tr><td>T3</td><td>4 × 1</td><td>16</td><td>91.989176</td><td>95.929868</td><td>92.025395</td></tr><tr><td>T3</td><td>8 × 2</td><td>48</td><td>74.043113</td><td>86.063745</td><td>74.071213</td></tr><tr><td>T3</td><td>16 × 4</td><td>160</td><td>41.608482</td><td>64.492691</td><td>41.621095</td></tr><tr><td>Q4</td><td>4 × 1</td><td>16</td><td>76.034941</td><td>87.256154</td><td>76.136364</td></tr><tr><td>Q4</td><td>8 × 2</td><td>48</td><td>44.022439</td><td>66.391978</td><td>44.078947</td></tr><tr><td>Q4</td><td>16 × 4</td><td>160</td><td>16.411530</td><td>40.521262</td><td>16.430752</td></tr><tr><td>T6</td><td>4 × 1</td><td>48</td><td>1.278851</td><td>10.551309</td><td>1.068353</td></tr><tr><td>T6</td><td>8 × 2</td><td>160</td><td>0.151602</td><td>3.626582</td><td>0.126201</td></tr><tr><td>T6</td><td>16 × 4</td><td>576</td><td>0.012673</td><td>1.043073</td><td>0.010499</td></tr><tr><td>Q9</td><td>4 × 1</td><td>48</td><td>0.722098</td><td>7.752171</td><td>0.600962</td></tr><tr><td>Q9</td><td>8 × 2</td><td>160</td><td>0.059679</td><td>2.201678</td><td>0.049128</td></tr><tr><td>Q9</td><td>16 × 4</td><td>576</td><td>0.004311</td><td>0.584722</td><td>0.003493</td></tr></tbody></table></div>
+
+<div class="table-wrap"><table><caption>hを半減した各区間の観測収束次数</caption><thead><tr><th>要素</th><th>細分化</th><th>p_obs（e_u）</th><th>p_obs（e_E）</th></tr></thead><tbody><tr><td>T3</td><td>4x1 → 8x2</td><td>0.3131</td><td>0.1566</td></tr><tr><td>T3</td><td>8x2 → 16x4</td><td>0.8315</td><td>0.4163</td></tr><tr><td>Q4</td><td>4x1 → 8x2</td><td>0.7884</td><td>0.3942</td></tr><tr><td>Q4</td><td>8x2 → 16x4</td><td>1.4235</td><td>0.7123</td></tr><tr><td>T6</td><td>4x1 → 8x2</td><td>3.0765</td><td>1.5407</td></tr><tr><td>T6</td><td>8x2 → 16x4</td><td>3.5805</td><td>1.7978</td></tr><tr><td>Q9</td><td>4x1 → 8x2</td><td>3.5969</td><td>1.8160</td></tr><tr><td>Q9</td><td>8x2 → 16x4</td><td>3.7912</td><td>1.9128</td></tr></tbody></table></div>
+<!-- END MMS RESULTS -->
+<p><strong>二次要素でも誤差は0にならず、細分化すると減りました。</strong> 最細分割Q9の先端誤差は約0.00349%でも、ひずみ場の誤差e_Eは約0.585%。先端1点の一致だけで、応力・ひずみの精度も十分とは判断しません。</p>
+<p>T6・Q9のe_Eの観測次数は最後の区間で約1.80・1.91。一方、e_uは3を超えます。この解・形状・分割範囲で得た値であり、二次要素一般の次数とは扱いません。3段階・2区間だけで漸近域を断定できません。一次要素の誤差も減りましたが、今回の細かさではまだ大きい状態です。</p>
+<p class="callout"><strong>computed＝計算成立と釣合い診断の通過。精度合格ではありません。</strong> 精度許容値と漸近収束の自動合否は未設定で、not_evaluatedです。実機妥当性と他設計分野も未評価です。</p>
+<p>全12行で合力・合モーメント・支持反力・自由DOF残差の正規化誤差が1×10⁻⁸以下でした。体積力の仮想仕事、参照式、SI尺度、場の誤差、細分化、失敗処理、保存再計算を自動テストし、別モデルのCodexでも独立レビューしました。形状破綻や零エネルギーモードはerrorとして数値を採用しません。</p>
+<p>終了0は全行の計算成立・釣合い診断通過、1は入力・出力・計算エラー、2は計算値があるが釣合い診断の許容外です。0でも精度・製品の合格を意味しません。</p>
+<p>観測次数は同じ要素・剛性積分法の規則メッシュでnx,nyを同時に2倍にした組だけに計算します。誤差が1×10⁻¹⁰以下ならN/Aと理由を保存。この下限は保守的な表示基準で、丸め誤差の厳密な上限ではありません。</p>
+<p>ν=0、H/L=0.02〜0.5、s≤H/5、最大300節点。小変形チェックは講義4と共通の6M₀L/(EsH³)≤0.05（MMS先端変位比の1.5倍）です。時間は1回のウォームアップ後、3回の中央値と全サンプルを保存し、密行列の階数確認も含めています。</p>
+<p>節目の確認は「先端値だけでは何を見落とすか」「今回の観測次数から何を断定できないか」を結果からまとめて説明すること。細かな微分の反復には戻らず、次は求める精度と評価量を定める工程へ進みます。</p></section>
 <!-- BEGIN GENERATED QA -->
 <section id="review-qa" class="review-qa">
 <h2>一問一答と解説</h2>
