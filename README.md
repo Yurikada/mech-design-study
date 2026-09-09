@@ -141,6 +141,7 @@ docs/                     学習課題、拡張計画、設計判断、出典
 - [講義2：制約を満たす設計案を比較する](docs/learning/02-design-comparison.md)
 - [講義3：メッシュ・要素形状・次数を選ぶ](docs/learning/03-fem.md) / [ブラウザ版](docs/learning/03-fem.html)
 - [講義4：FEMの比較実験を設計する](docs/learning/04-fem-benchmark.md) / [ブラウザ版](docs/learning/04-fem-benchmark.html)
+- [講義5：曲率が変わる問題でメッシュ収束を確かめる](docs/learning/05-mesh-convergence.md) / [ブラウザ版](docs/learning/05-mesh-convergence.html)。体積力ケースの定式化と実装仕様。新荷重ケースは未実装。
 - [講義の閲覧・更新・公開準備](docs/learning/MAINTAINING.md)
 - [12分野と統合技術の学習ロードマップ](docs/roadmap.md)
 - [第一ケースの式・前提・課題](docs/learning/01-heated-cantilever.md)

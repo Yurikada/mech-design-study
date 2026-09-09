@@ -22,9 +22,13 @@ GitHubのファイル画面ではHTMLはソース表示になる。clone／ダ�
 
 各問の解答と解説は標準のdetails要素で開閉でき、JavaScriptなしでも閲覧できる。GitHubではMarkdownのプレビューで開く。追記後は解答をすべて開いた状態でも、モバイルと各テーマで横にはみ出さないことを確認する。
 
+対話では節目に確認をまとめ、次の段階へ進むための理解が確認できたら講義や実装を進める。全問を順番に回答することは必須にしない。本人の説明、本人の実行、数値検証、実機妥当性は別に記録する。
+
 既存の `verify_lecture.cjs` と `verify_fem_lecture.cjs` は、共通の `qa_review.cjs` で正本との本文照合・キーボード開閉を確認し、すべての解説を開いて表示監査する。
 
 講義4は `04-fem-benchmark.md` / `.html`、概念図 `assets/pure-bending-study.svg` と実測図 `assets/plane-convergence.svg`。`node scripts/verify_fem_lecture.cjs 04-fem-benchmark` で18表示条件・Q&A・リンク・SVGを確認する。検査結果は `outputs/benchmark-lecture-qa`。解析式の参照値と、第6節のM2b計算結果を区別する。
+
+講義5は `05-mesh-convergence.md` / `.html` と概念図 `assets/variable-curvature-study.svg`。`node scripts/verify_fem_lecture.cjs 05-mesh-convergence` で同じ18表示条件を確認し、結果を `outputs/convergence-lecture-qa` へ保存する。数値は製造解法の参照値であり、新しい体積力ケースのFEM結果ではない。
 
 M2bの実測JSONは `assets/plane-results.json`。`plane cases/plane_bending.toml --output outputs/new-plane.json` で新規計算し、数値と入力・品質を確認してから教材へ反映する。図は `python scripts/plot_plane_results.py docs/learning/assets/plane-results.json docs/learning/assets` で再生成する（Matplotlib 3.10.7）。本文の結果表も新しいJSONと同期する。左右で縦軸尺度が異なること、時間の測定範囲、丸め誤差域の順位を一般化しないことを維持する。独立レビューの状態は完了確認後に更新する。
 

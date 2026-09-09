@@ -8,6 +8,10 @@ before substantive changes.
   verification, and distinguish AI-assisted implementation from user understanding.
 - Include review questions, model answers, and explanations in every new lecture.
   Keep shared Q&A in docs/learning/assets/lecture-qa.json and regenerate both editions.
+- Use grouped checkpoints at topic boundaries. Once the user's explanation is
+  sufficient for the next step, advance to the next lesson or implementation.
+  Keep Q&A as reference; do not require every question to be answered in sequence.
+  Distinguish checked understanding from unconfirmed execution and validation.
 - Keep physical models separate from input handling, constraint evaluation, and UI.
 - Use explicit SI units, finite inputs, model versions, and documented assumptions.
 - Never convert unevaluated disciplines, unsupported conditions, or solver failures

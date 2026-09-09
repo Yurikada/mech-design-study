@@ -8,7 +8,7 @@
 <header class="masthead"><div class="masthead-inner"><a href="04-fem-benchmark.md">mech-design-study / 講義4</a><label class="theme-control">表示<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></div></header>
 <main id="main"><div class="intro"><p class="eyebrow">MECHANICAL DESIGN STUDY · LESSON 04</p><h1>FEMの比較実験を設計する</h1>
 <p class="lead">要素の性質を、解の分かる問題で確かめる。物理条件をそろえ、誤差・自由度数・計算状態を比較します。</p>
-<p class="note">純曲げの比較条件に続いて、M2bの実装結果と実行手順を追記しました。</p></div>
+<p class="note">純曲げの比較条件に続いて、M2bの実装結果と実行手順を追記しました。</p><p><a href="05-mesh-convergence.html">次の講義5：曲率が変わる問題でメッシュ収束を確かめる</a></p></div>
 <nav aria-label="講義の目次"><a href="#model">1. 純曲げモデル</a><a href="#load">2. 荷重と参照解</a><a href="#comparison">3. 比較条件</a><a href="#checks">4. 判定基準</a><a href="#plane-results">5. 実装結果</a><a href="#review-qa">一問一答と解説</a></nav>
 <section id="model"><h2>最初は、曲率が一定の純曲げ</h2><div class="two-column"><figure><img src="assets/pure-bending-study.svg" width="640" height="440" alt="左端固定の長方形に右端の軸方向分布荷重を与える。合力は0、合モーメントはM。"><figcaption>独自の概念図。寸法・矢印は模式的な表現です。</figcaption></figure><div>
 <p>長さ方向x、曲げ深さ方向y、面外方向zの長方形を使います。薄い面外方向への荷重がない、平面応力の面内曲げです。従来の加熱支持板とは別の教育用検証ケースです。</p>

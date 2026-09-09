@@ -7,9 +7,10 @@ const assert = require("node:assert/strict");
 const checkReview = require("./qa_review.cjs");
 const root = path.resolve(__dirname, "..");
 const stem = process.argv[2] || "03-fem";
-assert.ok(["03-fem", "04-fem-benchmark"].includes(stem));
-const benchmark = stem === "04-fem-benchmark";
-const output = path.join(root, "outputs", benchmark ? "benchmark-lecture-qa" : "fem-lecture-qa");
+assert.ok(["03-fem", "04-fem-benchmark", "05-mesh-convergence"].includes(stem));
+const benchmark = stem !== "03-fem";
+const convergence = stem === "05-mesh-convergence";
+const output = path.join(root, "outputs", convergence ? "convergence-lecture-qa" : benchmark ? "benchmark-lecture-qa" : "fem-lecture-qa");
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
@@ -64,8 +65,8 @@ fs.mkdirSync(output, { recursive: true });
     await page.setViewportSize({ width: 320, height: 900 });
     await page.locator("#theme").selectOption("dark");
     await page.locator(benchmark ? "#model" : "#choices").screenshot({ path: path.join(output, "mobile-dark.png") });
-    await page.locator(benchmark ? "#l4-q06" : "#l3-q23").screenshot({ path: path.join(output, "question-mobile-dark.png") });
-    const figure = benchmark ? "pure-bending-study.svg" : "fem-mesh-and-order.svg";
+    await page.locator(convergence ? "#l5-q01" : benchmark ? "#l4-q06" : "#l3-q23").screenshot({ path: path.join(output, "question-mobile-dark.png") });
+    const figure = convergence ? "variable-curvature-study.svg" : benchmark ? "pure-bending-study.svg" : "fem-mesh-and-order.svg";
     await page.goto(pathToFileURL(path.join(root, `docs/learning/assets/${figure}`)).href);
     const clipped = await page.evaluate(() => {
       const view = document.documentElement.viewBox.baseVal;
