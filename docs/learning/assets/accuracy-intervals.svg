@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 450" role="img" aria-labelledby="title desc">
+<title id="title">設計限界と数値誤差の区間</title>
+<desc id="desc">説明用の値。限界100マイクロメートル。誤差上限2マイクロメートルを仮定すると、95の区間は93から97で満足、99.2の区間は97.2から101.2で保留、102.5の区間は100.5から104.5で違反。各行は同じ線形尺度。</desc>
+<!-- A fixed light sheet keeps the standalone diagram legible in GitHub and print. -->
+<rect width="840" height="450" fill="#fafaf7"/>
+<g font-family="Segoe UI,Yu Gothic,Hiragino Kaku Gothic ProN,sans-serif" fill="#182933">
+<text x="24" y="32" font-size="23" font-weight="700">同じ誤差幅でも、限界との位置関係で判断が変わる</text>
+<text x="24" y="61" font-size="15">説明用：点＝FEM値、線＝根拠付きの誤差上限 ±2 µm を仮定した区間</text>
+<rect x="200" y="95" width="340" height="282" fill="#e6f0f6"/>
+<rect x="540" y="95" width="204" height="282" fill="#fff0e8"/>
+<path d="M540 90 V395" stroke="#9a3412" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="540" y="84" text-anchor="middle" font-size="16" fill="#9a3412">限界 100 µm</text>
+<g font-size="18" font-weight="700">
+<text x="24" y="141">A：95 ± 2</text><text x="24" y="236">B：99.2 ± 2</text><text x="24" y="331">C：102.5 ± 2</text>
+</g>
+<g stroke="#165f86" stroke-width="4" fill="#165f86">
+<path d="M302 125 V151 M302 138 H438 M438 125 V151"/><circle cx="370" cy="138" r="6"/>
+</g>
+<g stroke="#75520d" stroke-width="4" fill="#75520d">
+<path d="M444.8 220 V246 M444.8 233 H580.8 M580.8 220 V246"/><circle cx="512.8" cy="233" r="6"/>
+</g>
+<g stroke="#9a3412" stroke-width="4" fill="#9a3412">
+<path d="M557 315 V341 M557 328 H693 M693 315 V341"/><circle cx="625" cy="328" r="6"/>
+</g>
+<g font-size="16" text-anchor="middle">
+<text x="370" y="177">93〜97</text><text x="512.8" y="272">97.2〜101.2</text><text x="625" y="367">100.5〜104.5</text>
+</g>
+<g font-size="17" font-weight="700">
+<text x="766" y="144" fill="#165f86">満足</text><text x="754" y="239" fill="#75520d">保留</text><text x="766" y="334" fill="#9a3412">違反</text>
+</g>
+<path d="M200 395 H744 M200 390 V400 M336 390 V400 M472 390 V400 M608 390 V400 M744 390 V400" stroke="#485e69"/>
+<g font-size="15" text-anchor="middle"><text x="200" y="421">90</text><text x="336" y="421">94</text><text x="472" y="421">98</text><text x="608" y="421">102</text><text x="744" y="421">106</text></g>
+<text x="24" y="442" font-size="14">変位 [µm] ／ 同じ数学モデル・評価量に対する判定。製品全体の承認ではない。</text>
+</g></svg>

@@ -34,6 +34,7 @@ figure { margin:0; min-width:0; }
 figure img,figure svg { display:block; width:100%; max-width:640px; height:auto; }
 #mms-results figure img { max-width:100%; }
 #mms-results th,#mms-results td { white-space:nowrap; overflow-wrap:normal; }
+.numeric-table th,.numeric-table td { white-space:nowrap; overflow-wrap:normal; }
 /* External SVGs deliberately retain a light drawing sheet for GitHub/print parity. */
 figcaption { margin-top:10px; }
 .callout { background:var(--blue-soft); border-left:4px solid var(--blue); padding:16px 20px; }

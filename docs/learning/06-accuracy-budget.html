@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="設計で必要な評価量を選び、設計余裕と数値誤差を比較する。誤差推定と上限保証、モデル上の判定と実機妥当性を区別する講義。">
+<title>講義6：評価量と必要精度を決める | mech-design-study</title>
+<link rel="stylesheet" href="assets/lecture.css"></head>
+<body><a class="skip" href="#main">本文へ移動</a>
+<header class="masthead"><div class="masthead-inner"><a href="06-accuracy-budget.md">mech-design-study / 講義6</a><label class="theme-control">表示<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></div></header>
+<main id="main"><div class="intro"><p class="eyebrow">MECHANICAL DESIGN STUDY · LESSON 06</p><h1>評価量と必要精度を決める</h1>
+<p class="lead">「計算値が限界以内」と「誤差を考慮しても限界以内」は、別の判断です。</p>
+<p>設計で使う評価量を選び、その量の誤差と設計余裕を比べます。確認は最後にまとめて行い、一問一答は復習にも使います。</p>
+<p class="note">今回は評価仕様の講義です。以下の限界値・誤差幅は説明用の仮定で、既存ケースやCLIの合否基準には追加していません。</p></div>
+<nav aria-label="講義の目次"><a href="#quantity">1. 評価量</a><a href="#model">2. 余裕と誤差</a><a href="#budget">3. 誤差の配分</a><a href="#estimate">4. 誤差推定</a><a href="#contract">5. 評価仕様</a><a href="#review-qa">一問一答と解説</a></nav>
+<section id="quantity"><h2>何を判断するための精度か</h2>
+<p>講義5の最細分割Q9では、先端変位誤差は約0.00349%、ひずみ場のエネルギーノルム誤差e_Eは約0.585%でした。<a href="assets/mms-results.json">保存結果JSON</a></p>
+<p><strong>この二つは評価対象と定義が違います。</strong> e_Eは領域全体で積分した誤差で、ある一点の応力誤差が0.585%以下であるとは保証しません。</p>
+<div class="table-wrap"><table><caption>設計目的から評価量Qを選ぶ例。全項目の実装済みを意味しません。</caption><thead><tr><th>目的</th><th>評価量の例</th><th>固定する条件</th></tr></thead><tbody>
+<tr><td>接触・干渉を防ぐ</td><td>指定位置・方向の変位、隙間</td><td>座標系、荷重、相手部品の変位</td></tr>
+<tr><td>局所的な降伏を避ける</td><td>定義した位置の相当応力</td><td>材料則、形状、評価位置、平均化方法</td></tr>
+<tr><td>共振を避ける</td><td>対応づけたモードの固有振動数</td><td>支持剛性、付加質量、モードの取り違え</td></tr>
+<tr><td>過熱を避ける</td><td>指定部品の温度、最高温度</td><td>発熱、接触熱抵抗、対流・放射、時刻</td></tr>
+</tbody></table></div>
+<p>最大応力を使う場合も、鋭い角の特異点の最大値を追う前に、形状と評価方法を確認します。メッシュごとに位置や平均化方法を変えると、同じQの比較になりません。</p></section>
+<section id="model"><h2>設計余裕と誤差幅を比べる</h2>
+<p>上限制約Q≤Q_limを考えます。Q_hはFEM値、Q_modelは同じ数学モデルの連続体解。この節では、<strong>根拠付きの数値誤差上限</strong>Δ_numが与えられ、|Q_model−Q_h|≤Δ_numを満たすと仮定します。</p>
+<p class="formula">Q_model ∈ [Q_h−Δ_num, Q_h+Δ_num]<br>設計余裕 m = Q_lim−Q_h</p>
+<ul><li>区間の上端が限界以下：このモデル・この評価量の制約を満たす。</li><li>区間の下端が限界より大きい：このモデル・この評価量の制約に違反する。</li><li>区間の下端≤限界&lt;上端：合否を確定できない。下端が限界と一致する場合も含みます。</li></ul>
+<p>等号は合格側に含めます。公称値が限界以下のとき、Δ_num≤mなら数値誤差を含めてもモデル上の制約を満たします。</p>
+<figure><img src="assets/accuracy-intervals.svg" alt="限界100 µmに対して、95±2は満足、99.2±2は判定保留、102.5±2は違反。説明用に誤差上限を仮定した区間であり、実測値ではない。"><figcaption>点はFEM値、線は同じ数学モデルの解を含むと仮定した区間。全行同じ線形尺度です。</figcaption></figure>
+<p><a href="assets/accuracy-intervals.svg">図を拡大して開く</a></p>
+<div class="table-wrap"><table class="numeric-table"><caption>限界100 µm＝0.1 mm。全て説明用の仮定。</caption><thead><tr><th>例</th><th>Q_h [µm]</th><th>Δ_num [µm]</th><th>区間 [µm]</th><th>モデル上の判定</th></tr></thead><tbody>
+<tr><td>A</td><td>95</td><td>2</td><td>93〜97</td><td>満足</td></tr>
+<tr><td>B</td><td>99.2</td><td>2</td><td>97.2〜101.2</td><td>判定保留</td></tr>
+<tr><td>C</td><td>102.5</td><td>2</td><td>100.5〜104.5</td><td>違反</td></tr>
+</tbody></table></div>
+<p class="callout">誤差上限が未取得なら、0で埋めず未評価にします。区間を作る情報がない状態と、有効な区間が限界をまたぐ状態も分けます。</p></section>
+<section id="budget"><h2>メッシュを細かくしても消えない差</h2>
+<p>前節の区間は同じモデルの解を対象にします。実機の支持剛性、荷重、寸法、物性の差は別に残ります。数値誤差が小さくても、剛固定モデルが実機の弾性支持と一致するとは限りません。</p>
+<p>同じQへ換算した数値誤差上限Δ_numと、その他の差の上限Δ_otherにそれぞれ根拠があるなら、三角不等式でΔ_num+Δ_otherを保守的な上限にできます。Δ_otherの妥当性と、二重計上しない整理が必要です。</p>
+<p>説明用にQ_h=95 µm、限界100 µm、Δ_other=3 µmとすると、数値誤差へ配分できる幅は最大2 µmです。</p>
+<p class="formula">Δ_num ≤ Q_lim−Q_h−Δ_other<br>= 100−95−3 = 2 µm</p>
+<p>右辺が負なら、現在のQ_hとΔ_otherを固定したままΔ_numだけを小さくしても、この満足条件は達成できません。細分化ではQ_h自体も変わるため、更新した値で余裕を再計算します。必要に応じて設計、モデル、入力範囲、上限の根拠を見直します。未知の差を0と置いたり、確率モデルなしに二乗和平方根で小さく合成したりしません。</p></section>
+<section id="estimate"><h2>参照解がないときは、誤差を推定する</h2>
+<p>MMSと違い、一般形状では参照解が不明なことがあります。Richardson外挿はQ(h)≈Q₀+C h^pという主要誤差項の近似に基づきます。十分細かい漸近域と、同じ評価量・条件での系統的な細分化が前提です。<a href="https://www.grc.nasa.gov/www/wind/valid/tutorial/spatconv.html">NASAの格子収束解説</a></p>
+<p>粗→中→細のh、h/2、h/4の値をQ_c,Q_m,Q_fとします。差が同符号で非ゼロ、減少し、丸め誤差に埋もれない場合：</p>
+<p class="formula">p = log₂ |(Q_c−Q_m)/(Q_m−Q_f)|<br>Q₀ ≈ Q_f + (Q_f−Q_m)/(2^p−1)<br>Δ̂_num = |Q_f−Q_m|/(2^p−1)</p>
+<p>記号計算用の例80→92→95 µmなら、p=2、Q₀≈96 µm、細分割の誤差推定は1 µmです。これはFEM実測値でも、誤差1 µm以内の厳密保証でもありません。</p>
+<p>3値が式に合うだけで漸近域とは断定せず、追加の分割での安定性、積分・解法の誤差、境界や特異性を調べます。差の符号が交互に変わる場合やp≤0には、この単純な式をそのまま使いません。</p>
+<p class="callout"><strong>推定値Δ̂_numと、保証された上限Δ_numを分けて記録します。</strong> 近い二つのメッシュ解が同じモデル誤差を共有することもあります。Richardson推定機能と区間判定は現CLIでは未実装です。</p></section>
+<section id="contract"><h2>次の実装へ渡す評価仕様</h2>
+<ol><li>評価量：指標、SI単位、位置・方向・領域、応力の平均化方法。</li><li>要求：上限・下限、値、出典と版。</li><li>計算条件：形状、物性、荷重、拘束、要素、積分、メッシュ、ソルバー版。</li><li>精度の根拠：参照誤差・推定値・保証上限の区別、方法、適用条件、比較系列。</li><li>未評価の差：支持、入力、物性、実機との差など。</li><li>判定：計算エラー、精度未評価、モデル上の満足・違反、区間が限界をまたぐ保留を分ける。</li></ol>
+<p>未取得の誤差上限を0とせず、単純なOK/NGへ情報を落とさないことが、統合ツール側の要件です。</p>
+<p>節目の確認は、Bの例の「区間・判定・次に調べること」をまとめて説明すること。十分なら、同じ計算の反復をせず評価仕様の具体化へ進みます。</p></section>
+<!-- BEGIN GENERATED QA -->
+<section id="review-qa" class="review-qa">
+<h2>一問一答と解説</h2>
+<p>各問でいったん考え、解答例と解説を開いて確認する。対話で扱った論点を汎用の教材として再構成したもので、個人の回答・成績・実行記録ではない。解答例を読んだことと、自分で説明・実行できたことは別に確認する。</p>
+<figure><img src="assets/accuracy-intervals.svg" alt="設計限界100 µmと、数値誤差上限を含む3つの区間の位置関係。説明用の仮定。"></figure>
+<article class="qa-item" id="l6-q01">
+<h3>L6-Q01</h3><p><strong>問い：</strong>限界100 µm、FEM変位99.2 µm。根拠付きの数値誤差上限が2 µmなら、モデル上の制約を満たすと確定できるか。区間・判定・次の確認を説明する。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>区間は97.2〜101.2 µmで限界をまたぐため、判定保留。現在のQ_hを基準とする数値誤差の予算は0.8 µm。細分化後は新しいQ_hで余裕を計算し直す。</p>
+<p><strong>解説：</strong>数値誤差だけを考える説明用設定。公称値が限界以下でも、区間の上端が101.2 µmなので満足は保証できない。同時に下端は限界以下なので違反とも確定できない。誤差上限の根拠と細分化で減る成分を確認する。実機への判断には入力・支持等の差も別に考える。</p>
+</details></article>
+<article class="qa-item" id="l6-q02">
+<h3>L6-Q02</h3><p><strong>問い：</strong>講義5のエネルギーノルム誤差e_E=0.585%を、切り欠きの一点の応力誤差上限0.585%として使えるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>使えない。領域全体の積分ノルムと、局所の応力誤差は異なる評価量。</p>
+<p><strong>解説：</strong>小さな領域の大きな誤差が、全体のノルムでは目立たないことがある。必要な位置・応力成分または相当応力・平均化方法を固定して、その量の収束と形状の妥当性を調べる。特異点の最大値を追い続ける設定も見直す。</p>
+</details></article>
+<article class="qa-item" id="l6-q03">
+<h3>L6-Q03</h3><p><strong>問い：</strong>Q_h=95 µm、限界100 µm、同じ評価量に換算したその他の差の上限Δ_other=3 µm。全体の保守的な満足条件を満たすため、数値誤差へ最大何µmを配分できるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>2 µm。95+3+Δ_num≤100よりΔ_num≤2。</p>
+<p><strong>解説：</strong>各上限に根拠があり、同じQの差を重複なく扱う前提。未知の差を0と置かない。余裕が残らない場合は、設計やモデル・入力範囲の見直しも必要になる。確率モデルなしの二乗和平方根で上限を縮めない。</p>
+</details></article>
+<article class="qa-item" id="l6-q04">
+<h3>L6-Q04</h3><p><strong>問い：</strong>hを半減した3段階でQが80→92→95 µmだった。単純なRichardson外挿によるp、外挿値、最細分割の誤差推定を求め、保証の限界を説明する。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>p=log₂(12/3)=2、外挿値96 µm、誤差推定1 µm。ただし厳密な誤差上限ではない。</p>
+<p><strong>解説：</strong>Q(h)≈Q₀+C h^pという主要項が支配し、同じQ・同じ条件を系統的に細分化する前提。3値だけで漸近域とは断定せず、追加分割で安定性を確認する。差が0、丸め誤差域、交互符号、p≤0ではこの式をそのまま使わない。推定と保証上限を区別して記録する。</p>
+<p><a href="https://www.grc.nasa.gov/www/wind/valid/tutorial/spatconv.html">出典・照合先</a></p>
+</details></article>
+</section>
+<!-- END GENERATED QA -->
+<footer><h2>出典と教材について</h2><p>講義5の数値は本リポジトリの保存結果、A/B/C・誤差配分・80→92→95は本教材の説明用設定です。NASA資料は流体の格子収束の一次資料であり、本構造モデルや許容値の認定ではありません。</p><p><a href="05-mesh-convergence.html">講義5</a> · <a href="06-accuracy-budget.md">講義6のMarkdown版</a></p><p class="note">2026-09-10 / AI支援教材 / 実機妥当性は未検証 / 配布ライセンス未設定。テーマ以外の学習履歴は保存・送信しません。</p></footer></main>
+<script>
+(() => {
+  const select = document.getElementById("theme");
+  const apply = value => {
+    if (value === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = value;
+  };
+  try {
+    const stored = localStorage.getItem("mech-accuracy-theme");
+    if (["system", "light", "dark"].includes(stored)) select.value = stored;
+  } catch (_) {}
+  apply(select.value);
+  select.addEventListener("change", () => {
+    apply(select.value);
+    try { localStorage.setItem("mech-accuracy-theme", select.value); } catch (_) {}
+  });
+})();
+</script></body></html>

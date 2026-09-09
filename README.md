@@ -154,6 +154,7 @@ docs/                     学習課題、拡張計画、設計判断、出典
 - [講義3：メッシュ・要素形状・次数を選ぶ](docs/learning/03-fem.md) / [ブラウザ版](docs/learning/03-fem.html)
 - [講義4：FEMの比較実験を設計する](docs/learning/04-fem-benchmark.md) / [ブラウザ版](docs/learning/04-fem-benchmark.html)
 - [講義5：曲率が変わる問題でメッシュ収束を確かめる](docs/learning/05-mesh-convergence.md) / [ブラウザ版](docs/learning/05-mesh-convergence.html)。体積力の定式化、12条件の場の誤差と観測収束次数。
+- [講義6：評価量と必要精度を決める](docs/learning/06-accuracy-budget.md) / [ブラウザ版](docs/learning/06-accuracy-budget.html)。設計余裕と誤差区間、誤差の配分、推定値と保証上限の区別。新しい判定機能は未実装。
 - [講義の閲覧・更新・公開準備](docs/learning/MAINTAINING.md)
 - [12分野と統合技術の学習ロードマップ](docs/roadmap.md)
 - [第一ケースの式・前提・課題](docs/learning/01-heated-cantilever.md)

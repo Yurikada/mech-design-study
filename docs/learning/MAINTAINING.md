@@ -36,6 +36,8 @@ M2bの実測JSONは `assets/plane-results.json`。`plane cases/plane_bending.tom
 
 ## 数値と比較表の再生成
 
+講義6は `06-accuracy-budget.md` / `.html` と `assets/accuracy-intervals.svg`。誤差区間は実測値ではなく説明用設定で、全行を同じ線形尺度で描く。`node scripts/verify_fem_lecture.cjs 06-accuracy-budget` で18表示条件・Q&A・リンク・SVGを検証し、`outputs/accuracy-lecture-qa` へ保存する。図の数値と区間の等号条件は両版で照合する。保証上限と推定値、現CLIと将来の評価仕様を混同しない。
+
 Pythonのモデルを正として36ケースを生成する。ブラウザはその値を表示・単位換算する。別実装の物理ソルバーをJavaScriptに持たせない。
 
 ```powershell
