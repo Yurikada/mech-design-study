@@ -201,6 +201,13 @@
 <p><strong>解説：</strong>小ひずみの面内変形を考える。純曲げでは軸ひずみε_x=−κyは生じるが、工学せん断ひずみは0である。横変位vの傾きだけでせん断ひずみと判断せず、uのy方向微分も合わせる。次に、Q4補間がこの打ち消しを要素内で維持できるかを調べる。ここでγ_xyは工学せん断ひずみで、ひずみテンソルの成分ε_xyの2倍。</p>
 <p class="formula">γ_xy = −κx + κx = 0； ε_x = ∂u/∂x = −κy</p>
 </details></article>
+<article class="qa-item" id="l4-q24">
+<h3>L4-Q24</h3><p><strong>問い：</strong>長方形Q4要素の範囲を0≤x≤ℓとする。純曲げ参照解の節点値を補間するとu_h=−κxy、v_h=κℓx/2となる。γ_xy,h=∂u_h/∂y+∂v_h/∂xを求めると、要素内の全点で0になるか。</p>
+<details><summary>解答例と解説</summary>
+<p><strong>解答例：</strong>γ_xy,h=κ(ℓ/2−x)。κ≠0なら0になるのはx=ℓ/2だけで、要素全域では0にならない。</p>
+<p><strong>解説：</strong>Q4はxyを含むのでuを再現できる。一方、左右の節点でv(0)=0、v(ℓ)=κℓ²/2となり、Q4でのvの補間はx方向に直線になる。∂u_h/∂y=−κxは位置に応じて変わるが、∂v_h/∂x=κℓ/2は一定なので、せん断ひずみを全域で打ち消せない。これは参照解の節点値を入れた補間能力の検査であり、荷重から求解したFEM変位そのものとは区別する。この不要なせん断成分が、曲げに対して余分なエネルギーを与える仕組みを次に考える。長方形・一定曲率の設定に限った導出である。</p>
+<p class="formula">γ_xy,h = −κx + κℓ/2 = κ(ℓ/2−x)</p>
+</details></article>
 </section>
 <!-- END GENERATED QA -->
 <footer><h2>出典と教材について</h2><p><a href="https://interactivetextbooks.citg.tudelft.nl/computational-modelling/continuum_linear/continuum_mechanics.html">TU Delft：平面応力と境界条件</a> · <a href="https://docs.software.vt.edu/abaqusv2025/English/SIMACAEBMKRefMap/simabmk-c-linbending.htm">Abaqus：曲げ性能の比較</a></p><p>寸法と荷重は独自の教育用設定。外部の数値結果を転載したものではありません。M2bの純曲げソルバーによる結果を掲載しています。</p><p><a href="03-fem.html">講義3</a> · <a href="04-fem-benchmark.md">講義4のMarkdown版</a></p><p class="note">2026-09-08 / AI支援教材 / GitHub公開済み・配布ライセンス未設定。テーマ以外の回答や学習履歴は保存・送信しません。</p></footer></main>
