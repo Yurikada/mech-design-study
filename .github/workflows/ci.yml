@@ -33,3 +33,5 @@ jobs:
       - run: python -m mech_design compare --replay outputs/comparison.json --json
       - run: python -m mech_design fem cases/cantilever_fem.toml --output outputs/fem.json
       - run: python -m mech_design fem --replay outputs/fem.json
+      - run: python -m mech_design plane cases/plane_bending.toml --output outputs/plane.json
+      - run: python -m mech_design plane --replay outputs/plane.json

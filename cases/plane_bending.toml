@@ -1,0 +1,154 @@
+schema_version = 1
+repetitions = 3
+
+[model]
+length_m = 0.1
+depth_m = 0.01
+thickness_m = 0.001
+young_modulus_pa = 70e9
+poisson_ratio = 0.0
+moment_nm = 0.1
+
+[[designs]]
+id = "T3-4x1"
+family = "T3"
+nx = 4
+ny = 1
+distortion = 0
+
+[[designs]]
+id = "T3-8x2"
+family = "T3"
+nx = 8
+ny = 2
+distortion = 0
+
+[[designs]]
+id = "T3-16x4"
+family = "T3"
+nx = 16
+ny = 4
+distortion = 0
+
+[[designs]]
+id = "T3-8x2-warped"
+family = "T3"
+nx = 8
+ny = 2
+distortion = 0.2
+
+[[designs]]
+id = "T3-8x2-warped-high"
+family = "T3"
+nx = 8
+ny = 2
+distortion = 0.2
+integration = "high"
+
+[[designs]]
+id = "T6-4x1"
+family = "T6"
+nx = 4
+ny = 1
+distortion = 0
+
+[[designs]]
+id = "T6-8x2"
+family = "T6"
+nx = 8
+ny = 2
+distortion = 0
+
+[[designs]]
+id = "T6-16x4"
+family = "T6"
+nx = 16
+ny = 4
+distortion = 0
+
+[[designs]]
+id = "T6-8x2-warped"
+family = "T6"
+nx = 8
+ny = 2
+distortion = 0.2
+
+[[designs]]
+id = "Q4-4x1"
+family = "Q4"
+nx = 4
+ny = 1
+distortion = 0
+
+[[designs]]
+id = "Q4-8x2"
+family = "Q4"
+nx = 8
+ny = 2
+distortion = 0
+
+[[designs]]
+id = "Q4-16x4"
+family = "Q4"
+nx = 16
+ny = 4
+distortion = 0
+
+[[designs]]
+id = "Q4-8x2-warped"
+family = "Q4"
+nx = 8
+ny = 2
+distortion = 0.2
+
+[[designs]]
+id = "Q9-4x1"
+family = "Q9"
+nx = 4
+ny = 1
+distortion = 0
+
+[[designs]]
+id = "Q9-8x2"
+family = "Q9"
+nx = 8
+ny = 2
+distortion = 0
+
+[[designs]]
+id = "Q9-16x4"
+family = "Q9"
+nx = 16
+ny = 4
+distortion = 0
+
+[[designs]]
+id = "Q9-8x2-warped"
+family = "Q9"
+nx = 8
+ny = 2
+distortion = 0.2
+
+[[designs]]
+id = "T6-8x2-warped-high"
+family = "T6"
+nx = 8
+ny = 2
+distortion = 0.2
+integration = "high"
+
+[[designs]]
+id = "Q4-8x2-warped-high"
+family = "Q4"
+nx = 8
+ny = 2
+distortion = 0.2
+integration = "high"
+
+[[designs]]
+id = "Q9-8x2-warped-high"
+family = "Q9"
+nx = 8
+ny = 2
+distortion = 0.2
+integration = "high"

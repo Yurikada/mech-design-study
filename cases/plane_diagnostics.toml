@@ -1,0 +1,24 @@
+schema_version = 1
+repetitions = 3
+
+[model]
+length_m = 0.1
+depth_m = 0.01
+thickness_m = 0.001
+young_modulus_pa = 70e9
+poisson_ratio = 0.0
+moment_nm = 0.1
+
+[[designs]]
+id = "Q4-reduced"
+family = "Q4"
+nx = 4
+ny = 1
+integration = "reduced"
+
+[[designs]]
+id = "T3-reversed"
+family = "T3"
+nx = 4
+ny = 1
+fault = "reverse_first_element"

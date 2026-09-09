@@ -95,7 +95,19 @@ Linuxや任意の作業ディレクトリからは、インストール済みPyt
 
 FEM検証の合格と設計全体の合格は別。梁の応力・たわみ・周波数は最細分割のFEM値、熱は従来の解析式で評価し、残る9分野は未評価のまま。終了コードは0 = 検証成功・評価済み制約合格、1 = 入力/計算/出力エラー、2 = 検証または設計制約違反、3 = 検証材料不足。`--require-complete` では未評価分野が残る場合も3となる。
 
-[講義3の実測結果と図](docs/learning/03-fem.md)を参照。M2bの2次元要素比較は今後の課題。
+[講義3の実測結果と図](docs/learning/03-fem.md)を参照。M2bの純曲げによる2次元要素比較は[講義4](docs/learning/04-fem-benchmark.md)に実装結果を掲載。
+
+## 平面応力の要素比較（M2b・純曲げ）
+
+```powershell
+.\run.cmd plane cases\plane_bending.toml --output outputs\my-plane.json
+.\run.cmd plane --replay outputs\my-plane.json
+.\run.cmd plane cases\plane_diagnostics.toml
+```
+
+T3/T6/Q4/Q9、分割数、内部節点のゆがみ、積分法を比較する。ν=0の純曲げ専用・最大300節点。全行の入力・メッシュ・誤差・品質・実測時間を保存する。出力は新規ファイルのみで、再計算には同じコード・NumPy/SciPy版が必要。
+
+各行はpass/fail/error。終了0は全行の計算成立かつ1行以上の検証合格、1は入力・出力・計算エラー、2は全行の精度不足。診断ケースは1が期待値。全行合格や製品承認ではない。別モデルのCodexでレビューを実施し、版番号の入力検証不備を修正した。
 
 ## 開発と検証
 

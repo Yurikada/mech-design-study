@@ -24,7 +24,9 @@ GitHubのファイル画面ではHTMLはソース表示になる。clone／ダ�
 
 既存の `verify_lecture.cjs` と `verify_fem_lecture.cjs` は、共通の `qa_review.cjs` で正本との本文照合・キーボード開閉を確認し、すべての解説を開いて表示監査する。
 
-講義4は `04-fem-benchmark.md` / `.html` と概念図 `assets/pure-bending-study.svg`。`node scripts/verify_fem_lecture.cjs 04-fem-benchmark` で18表示条件・Q&A・リンク・SVGを確認する。検査結果は `outputs/benchmark-lecture-qa`。参照値は解析式による値であり、未実装のM2bのFEM結果として扱わない。
+講義4は `04-fem-benchmark.md` / `.html`、概念図 `assets/pure-bending-study.svg` と実測図 `assets/plane-convergence.svg`。`node scripts/verify_fem_lecture.cjs 04-fem-benchmark` で18表示条件・Q&A・リンク・SVGを確認する。検査結果は `outputs/benchmark-lecture-qa`。解析式の参照値と、第6節のM2b計算結果を区別する。
+
+M2bの実測JSONは `assets/plane-results.json`。`plane cases/plane_bending.toml --output outputs/new-plane.json` で新規計算し、数値と入力・品質を確認してから教材へ反映する。図は `python scripts/plot_plane_results.py docs/learning/assets/plane-results.json docs/learning/assets` で再生成する（Matplotlib 3.10.7）。本文の結果表も新しいJSONと同期する。左右で縦軸尺度が異なること、時間の測定範囲、丸め誤差域の順位を一般化しないことを維持する。独立レビューの状態は完了確認後に更新する。
 
 ## 数値と比較表の再生成
 

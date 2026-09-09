@@ -16,7 +16,7 @@
 <h1>メッシュ・要素形状・次数を選ぶ</h1>
 <p class="lead">有限要素法で、何を近似し、何を確かめるか。</p>
 <p>梁要素で組み立て・拘束・振動を学び、2次元連続体で要素形状と次数を比較します。数値の一致と、モデルの適用性を分けて判断します。</p>
-<p class="note">AI支援の学習資料。M2aの梁FEMを実装済みで、M2bは計画段階です。図は本プロジェクトの概念図です。</p><p><a href="03-fem.md">M2aの実行手順・数値結果・収束図とモード図</a></p></div>
+<p class="note">AI支援の学習資料。M2aの梁FEMを実装済みで、M2bの純曲げ比較は講義4に実装結果を掲載しています。図は本プロジェクトの概念図です。</p><p><a href="03-fem.md">M2aの実行手順・数値結果・収束図とモード図</a></p></div>
 <nav aria-label="講義の目次"><a href="#choices">1. 選択を分ける</a><a href="#beam">2. 梁要素</a><a href="#convergence">3. 検証の題材</a><a href="#plan">4. 実験計画</a><a href="#question">5. 理解の確認</a><a href="#review-qa">一問一答と解説</a></nav>
 
 <section id="choices"><p class="chapter">01 / 近似の選択</p><h2>細かさだけでは決まらない</h2>
@@ -48,7 +48,7 @@
 <p>鋭い角や点荷重位置の応力が増え続ける場合は、特異点の可能性を考えます。評価点を固定した物理座標で定め、最大値だけで収束を判断しません。<a href="https://www.comsol.com/blogs/how-identify-resolve-singularities-model-meshing/">COMSOL：特異点の解説</a></p></section>
 
 <section id="plan"><p class="chapter">04 / 段階的な検証</p><h2>梁から2次元へ</h2>
-<div class="table-wrap"><table><caption>M2aは実装済み、M2bは計画段階。</caption><thead><tr><th>段階</th><th>変えるもの</th><th>確認するもの</th></tr></thead><tbody>
+<div class="table-wrap"><table><caption>M2aは実装済み、M2bの純曲げ比較は講義4に実装結果を掲載。</caption><thead><tr><th>段階</th><th>変えるもの</th><th>確認するもの</th></tr></thead><tbody>
 <tr><th>M2a：梁</th><td>要素数 1 → 2 → 4 → 8 → 16</td><td>静的解・反力・一次固有振動数・モード・残差</td></tr>
 <tr><th>M2b：2次元</th><td>T3/T6、Q4/Q9を候補に、形状・次数・品質を比較</td><td>自由度数・誤差・時間・厚み方向の分割・応力評価位置</td></tr>
 </tbody></table></div>
