@@ -32,6 +32,8 @@ section { padding:44px 0; border-bottom:1px solid var(--line); scroll-margin-top
 .two-column { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; align-items:start; margin:24px 0; }
 figure { margin:0; min-width:0; }
 figure img,figure svg { display:block; width:100%; max-width:640px; height:auto; }
+#mms-results figure img { max-width:100%; }
+#mms-results th,#mms-results td { white-space:nowrap; overflow-wrap:normal; }
 /* External SVGs deliberately retain a light drawing sheet for GitHub/print parity. */
 figcaption { margin-top:10px; }
 .callout { background:var(--blue-soft); border-left:4px solid var(--blue); padding:16px 20px; }
